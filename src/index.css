@@ -1,0 +1,65 @@
+:root {
+  --color-bg: #eee;
+  --color-text: #222;
+  
+  // RENCI Color Palette
+  --color-renci: #00758d;
+  --color-unc: #4b9cd3;
+
+  // UNC Color Palette
+  --color-unc-carolina-blue: #4b9cd3;
+  --color-unc-navy: #13294b;
+  --color-unc-black: #151515;
+  --color-unc-white: #ffffff;
+  --color-unc-gray: #f8f8f8;
+  --color-unc-basin-slate: #4f758b;
+  --color-unc-campus-sandstone: #f4e8dd;
+  --color-unc-longleaf-pine: #00594c;
+  --color-unc-azalea-pink: #ef426f;
+  --color-unc-tile-teal: #00a5ad;
+  --color-unc-sunburst-yellow: #ffd100;
+  --color-unc-davie-green: #c4d600;
+  --color-unc-hyperlink-blue: #007fae;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 10pt;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(120deg, var(--color-bg), var(--color-unc-campus-sandstone));
+}
+
+.title {
+  font-weight: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  33% {
+    transform: rotate(65deg);
+  }
+  100% {
+    transform: rotate(60deg);
+  }
+}
+
+.react-logo {
+  animation: spin infinite 1000ms ease-out;
+}
