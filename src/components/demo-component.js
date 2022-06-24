@@ -1,4 +1,4 @@
-import renciLogo from '../images/renci-logo.png'
+import helxLogo from '../images/helx-logo.png'
 
 const ReactLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3" height="50" className="react-logo" >
@@ -12,11 +12,9 @@ const ReactLogo = () => (
 
 export const DemoComponent = () => {
   return (
-    <>
-      <img src={ renciLogo } width="125" alt="" />
-      <h1 className="title">
-        <ReactLogo /> React Starter
-      </h1>
-    </>
+    <div className="title">
+      <ReactLogo />
+      <img src={ helxLogo } width="125" alt="" />
+    </div>
   )
 }
