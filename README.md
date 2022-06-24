@@ -11,3 +11,7 @@ Now, that we have the base code. We're ready to install the application depdende
 To build a production-ready React app from this starter, run `npm run build` from the project root directory. The bundled files will be exported to the `dist` directory.
 
 To build an easily debuggable production build, use `npm run build-dev`.
+
+### GitHub Pages Deployment
+
+As development ramps up, quick deployments to GitHub Pages ([helxplatform.github.io/hubhub-ui/](https://helxplatform.github.io/hubhub-ui/)) by building the application bundle pushing to the `gh-pages` branch. A single script handles this: `npm run deploy`.
