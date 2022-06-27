@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const items = [
   { text: 'repos', path: '/repos' },
-  { text: 'deployments', path: '/deployments' },
+  // { text: 'deployments', path: '/deployments' },
 ]
 
 export const Menu = () => {

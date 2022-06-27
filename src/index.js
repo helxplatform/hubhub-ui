@@ -2,8 +2,19 @@ import { App } from './app'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const container = document.getElementById('root')
 const root = createRoot(container)
 
-root.render(<BrowserRouter><App /></BrowserRouter>)
+const queryClient = new QueryClient()
+
+const ProvisionedApp = () => (
+  <QueryClientProvider client={ queryClient }>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </QueryClientProvider>
+)
+
+root.render(<ProvisionedApp />)

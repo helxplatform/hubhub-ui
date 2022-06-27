@@ -8,7 +8,8 @@ header {
 }
 
 .sidebar {
-  position: absolute;
+  position: fixed;
+  
   min-height: 100vh;
   overflow: hidden;
   background-color: #000b;
@@ -17,12 +18,14 @@ header {
 
 .content {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
+  flex: 1;
   padding: 1rem;
   background-color: #0003;
-  height: 100%;
 }
 
 .menu {

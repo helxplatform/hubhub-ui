@@ -1,5 +1,6 @@
 import { Fragment, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import helxLogo from '../../images/helx-logo.png'
 import { Menu } from './menu'
 import './layout.scss'
@@ -10,7 +11,7 @@ const SIDEBAR = {
 }
 
 export const Layout = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const sidebarClasses = useMemo(() => {
     let classes = ['sidebar']
     if (sidebarOpen) {
@@ -35,7 +36,7 @@ export const Layout = ({ children }) => {
           <button onClick={ () => setSidebarOpen(!sidebarOpen) }>
             { sidebarOpen ? 'x' : '☰' }
           </button>
-          <img src={ helxLogo } width="75" alt="" />
+          <Link to="/"><img src={ helxLogo } width="75" alt="" /></Link>
         </header>
         <main>
           { children }
