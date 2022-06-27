@@ -11,7 +11,7 @@ const queryClient = new QueryClient()
 
 const ProvisionedApp = () => (
   <QueryClientProvider client={ queryClient }>
-    <BrowserRouter basename="/hubhub-ui">
+    <BrowserRouter basename={ process.env.NODE_ENV === 'production' ? '/hubhub-ui' : '' }>
       <App />
     </BrowserRouter>
   </QueryClientProvider>
