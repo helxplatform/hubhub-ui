@@ -1,4 +1,3 @@
-import { Suspense, useState } from 'react'
 import { useQuery } from 'react-query'
 
 export const ReposView = () => {
@@ -6,6 +5,8 @@ export const ReposView = () => {
     fetch('https://hubhub-jeffw.apps.renci.org/app/current')
       .then(response => response.json())
   )
+
+  console.log('error?', error)
 
   return (
     <p>

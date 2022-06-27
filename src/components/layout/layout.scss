@@ -1,5 +1,5 @@
 header {
-  background-color: #0004;
+  background-color: #222;
   padding: 1rem;
   display: flex;
   gap: 1rem;
@@ -9,11 +9,10 @@ header {
 
 .sidebar {
   position: fixed;
-  
   min-height: 100vh;
   overflow: hidden;
   background-color: #000b;
-  border-right: 5px solid #000c;
+  border-right: 5px solid #222;
 }
 
 .content {
@@ -48,4 +47,8 @@ main {
       }
     }
   }
+}
+
+.menu-toggler {
+  cursor: pointer;
 }
