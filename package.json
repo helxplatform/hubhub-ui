@@ -37,6 +37,8 @@
     "core-js": "^3.22.8",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-query": "^3.39.1",
+    "react-router-dom": "^6.3.0",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.52.3",
     "sass-loader": "^13.0.0"
