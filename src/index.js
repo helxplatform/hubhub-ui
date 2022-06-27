@@ -11,7 +11,7 @@ const queryClient = new QueryClient()
 
 const ProvisionedApp = () => (
   <QueryClientProvider client={ queryClient }>
-    <BrowserRouter>
+    <BrowserRouter basename="/hubhub-ui">
       <App />
     </BrowserRouter>
   </QueryClientProvider>
