@@ -9,19 +9,50 @@
 
   .details {
     .tags-list {
-      padding: 0.5rem;
-    }
-    .tag {
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      .tags-list-heading {
+        margin: 0;
+      }
+      .tag {
+        padding: 0.5rem;
+        filter: opacity(0.66);
+        border-left: 1px solid #333;
+        .tag-name {
+        }
+        &:hover .github-hash {
+          filter: opacity(1.0);
+        }
+        .github-hash {
+          font-weight: normal;
+          transition: filter 250ms;
+          filter: opacity(0);
+        }
+        .artifacts-list {
+          padding-left: 0.5rem;
+          font-style: italic;
+          .artifact {
+          }
+        }
+      }
     }
   }
 
+  summary {
+    padding: .5rem;
+    cursor: pointer;
+  }
+
   .debug {
+    transition: filter 250ms;
     background-color: #666;
-    color: #ccc;
-    font-size: 75%;
-    summary {
-      padding: .5rem;
+    filter: opacity(0.7);
+    &:hover {
+      filter: opacity(1.0);
     }
+    color: #ccc;
     .project-json {
       padding: .5rem;
       background-color: #222;

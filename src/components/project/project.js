@@ -1,11 +1,76 @@
+import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './project.scss'
 
+const Artifacts = ({ containers, dockerhub }) => {
+  return (
+    <div className="artifacts-list">
+      {
+        dockerhub && (
+          <div className="artifact dockerhub">
+            + DockerHub: <a
+              href={ `https://hub.docker.com/r/helxplatform/${ dockerhub.repository_name }` }
+              target="_blank"
+              rel="noopener noreferrer"
+            >{ dockerhub.repository_name }</a>
+          </div>
+        )
+      }
+      {
+        containers && (
+          <div className="artifact containers">
+            + Containers: <a
+              href={ `https://containers.renci.org/helxplatform/${ containers.repository_name }` }
+              target="_blank"
+              rel="noopener noreferrer"
+            >{ containers.repository_name }</a>
+          </div>
+        )
+      }
+    </div>
+    )
+}
+
+Artifacts.propTypes = {
+  containers: PropTypes.shape({
+    repository_name: PropTypes.string.isRequired,
+    digest: PropTypes.string.isRequired,
+  }),
+  dockerhub: PropTypes.shape({
+    repository_name: PropTypes.string.isRequired,
+    digest: PropTypes.string.isRequired,
+  }),
+}
+
+//
+
 const Tag = ({ tag }) => {
-  const { tag_name } = tag
+  const {
+    tag_name,
+    github_commit_hash,
+    github_repository_name,
+    artifacts,
+  } = tag
+
   return (
     <div className="tag">
-      <span>- { tag_name }</span>
+      <div className="tag-name">
+        {
+          github_repository_name && tag_name ? (
+            <Fragment>
+              <a
+                href={ `https://github.com/helxplatform/${ github_repository_name }/releases/tag/${ tag_name }` }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                { tag_name }
+              </a>
+              <span className="github-hash"> - { github_commit_hash }</span>
+            </Fragment>
+          ) : tag_name
+        }
+      </div>
+      <Artifacts { ...artifacts } />
     </div>
   )
 }
@@ -25,7 +90,9 @@ export const Project = ({ project }) => {
         {
           Object.keys(tags).length > 0 && (
             <div className="tags-list">
-              <strong>TAGS</strong><br />
+              <h4 className="tags-list-heading">
+                <strong>TAGS</strong> ({ Object.keys(tags).length })
+              </h4>
               {
                 Object.keys(tags).map(key => (
                   <Tag key={ `${ repository_name }-${ key }` } tag={ tags[key] } />
