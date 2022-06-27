@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query'
+import { Project } from '../components/project'
 
 export const ReposView = () => {
   const { isLoading, error, data } = useQuery('projects', () => 
@@ -9,17 +10,20 @@ export const ReposView = () => {
   console.log('error?', error)
 
   return (
-    <p>
+    <div>
       { isLoading && <div>Loading repositories...</div> }
-      <ul>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {
           !isLoading && (
             Object.keys(data.projects).map(key => (
-              <li key={ key }>{ key }</li>
+              <Project
+                key={ key }
+                project={ data.projects[key] }
+              />
             ))
           )
         }
-      </ul>
-    </p>
+      </div>
+    </div>
   )
 }

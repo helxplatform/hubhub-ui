@@ -1,0 +1,32 @@
+.project {
+  background-color: #0001;
+
+  .project-name {
+    margin: 0;
+    background-color: #0002;
+    padding: 0.5rem;
+  }
+
+  .details {
+    .tags-list {
+      padding: 0.5rem;
+    }
+    .tag {
+    }
+  }
+
+  .debug {
+    background-color: #666;
+    color: #ccc;
+    font-size: 75%;
+    summary {
+      padding: .5rem;
+    }
+    .project-json {
+      padding: .5rem;
+      background-color: #222;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+  }
+}
