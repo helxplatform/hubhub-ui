@@ -1,5 +1,16 @@
+import { useMemo } from 'react'
 import { useQuery } from 'react-query'
+import { Box } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 import { Project } from '../components/project'
+
+const columns = [
+  {
+    field: 'id',
+    headerName: 'Repository',
+    width: 300,
+  },
+]
 
 export const ReposView = () => {
   const { isLoading, error, data } = useQuery('projects', () => 
@@ -7,23 +18,25 @@ export const ReposView = () => {
       .then(response => response.json())
   )
 
-  console.log('error?', error)
+  const tableData = useMemo(() => data
+    ? Object.keys(data.projects)
+      .map(key => ({ id: data.projects[key].repository_name }))
+    : [], [data])
 
   return (
     <div>
       { isLoading && <div>Loading repositories...</div> }
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {
-          !isLoading && (
-            Object.keys(data.projects).map(key => (
-              <Project
-                key={ key }
-                project={ data.projects[key] }
-              />
-            ))
-          )
-        }
-      </div>
+      {
+        !isLoading && (
+          <Box sx={{ height: 400, width: '100%' }}>
+            <DataGrid
+              rows={ tableData }
+              columns={ columns }
+              autoHeight
+            />
+          </Box>
+        )
+      }
     </div>
   )
 }
