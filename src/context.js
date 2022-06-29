@@ -22,8 +22,8 @@ export const AppContextProvider = ({ children }) => {
   const closeDrawer = () => setDrawerOpen(false)
 
   return (
-    <AppContext.Provider value={{ currentProjectID, setCurrentProjectID, drawerOpen, closeDrawer, projects }}>
-      { !isLoading ? children : <div>loading...</div> }
+    <AppContext.Provider value={{ currentProjectID, setCurrentProjectID, drawerOpen, closeDrawer, projects, isLoading }}>
+      { children }
     </AppContext.Provider>
   )
 }

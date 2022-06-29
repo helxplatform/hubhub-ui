@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Box } from '@mui/material'
+import { Box, LinearProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useApp } from '../context'
 
@@ -7,7 +7,7 @@ const columns = [
   {
     field: 'id',
     headerName: 'Repository',
-    width: 300,
+    flex: 1,
   },
   {
     field: 'tags',
@@ -17,7 +17,7 @@ const columns = [
 ]
 
 export const ProjectsView = () => {
-  const { projects, setCurrentProjectID } = useApp()
+  const { projects, setCurrentProjectID, isLoading } = useApp()
   const [pageSize, setPageSize] = useState(25)
 
   const tableData = useMemo(() => projects
@@ -39,6 +39,10 @@ export const ProjectsView = () => {
         columns={ columns }
         onRowClick={ handleClickRow }
         autoPageSize
+        components={{
+          LoadingOverlay: LinearProgress,
+        }}
+        loading={ isLoading }
       />
     </Box>
   )
