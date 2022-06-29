@@ -1,29 +1,35 @@
-import { useQuery } from 'react-query'
-import { Project } from '../components/project'
+import { useMemo } from 'react'
+import { Box } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import { useApp } from '../context'
+
+const columns = [
+  {
+    field: 'id',
+    headerName: 'Repository',
+    width: 300,
+  },
+]
 
 export const ReposView = () => {
-  const { isLoading, error, data } = useQuery('projects', () => 
-    fetch('https://hubhub-jeffw.apps.renci.org/app/current')
-      .then(response => response.json())
-  )
+  const { projects, setCurrentProjectID } = useApp()
 
-  console.log('error?', error)
+  const tableData = useMemo(() => projects
+    ? Object.keys(projects)
+      .map(key => ({ id: projects[key].repository_name }))
+    : [], [projects])
+
+  const handleClickRow = data => {
+    setCurrentProjectID(data.id)
+  }
 
   return (
-    <div>
-      { isLoading && <div>Loading repositories...</div> }
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {
-          !isLoading && (
-            Object.keys(data.projects).map(key => (
-              <Project
-                key={ key }
-                project={ data.projects[key] }
-              />
-            ))
-          )
-        }
-      </div>
-    </div>
+    <Box sx={{ height: 800, width: '100%' }}>
+      <DataGrid
+        rows={ tableData }
+        columns={ columns }
+        onRowClick={ handleClickRow }
+      />
+    </Box>
   )
 }
