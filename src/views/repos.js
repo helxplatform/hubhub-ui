@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { useQuery } from 'react-query'
 import { Box } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { Project } from '../components/project'
 
 const columns = [
   {
@@ -28,11 +27,10 @@ export const ReposView = () => {
       { isLoading && <div>Loading repositories...</div> }
       {
         !isLoading && (
-          <Box sx={{ height: 400, width: '100%' }}>
+          <Box sx={{ height: 800, width: '100%' }}>
             <DataGrid
               rows={ tableData }
               columns={ columns }
-              autoHeight
             />
           </Box>
         )
