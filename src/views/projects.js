@@ -11,7 +11,7 @@ const columns = [
   },
 ]
 
-export const ReposView = () => {
+export const ProjectsView = () => {
   const { projects, setCurrentProjectID } = useApp()
 
   const tableData = useMemo(() => projects

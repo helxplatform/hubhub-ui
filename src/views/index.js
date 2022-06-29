@@ -1,1 +1,1 @@
-export * from './repos'
+export * from './projects'
