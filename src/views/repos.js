@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { useQuery } from 'react-query'
 import { Box } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+import { useApp } from '../context'
 
 const columns = [
   {
@@ -12,29 +12,24 @@ const columns = [
 ]
 
 export const ReposView = () => {
-  const { isLoading, error, data } = useQuery('projects', () => 
-    fetch('https://hubhub-jeffw.apps.renci.org/app/current')
-      .then(response => response.json())
-  )
+  const { projects, setCurrentProjectID } = useApp()
 
-  const tableData = useMemo(() => data
-    ? Object.keys(data.projects)
-      .map(key => ({ id: data.projects[key].repository_name }))
-    : [], [data])
+  const tableData = useMemo(() => projects
+    ? Object.keys(projects)
+      .map(key => ({ id: projects[key].repository_name }))
+    : [], [projects])
+
+  const handleClickRow = data => {
+    setCurrentProjectID(data.id)
+  }
 
   return (
-    <div>
-      { isLoading && <div>Loading repositories...</div> }
-      {
-        !isLoading && (
-          <Box sx={{ height: 800, width: '100%' }}>
-            <DataGrid
-              rows={ tableData }
-              columns={ columns }
-            />
-          </Box>
-        )
-      }
-    </div>
+    <Box sx={{ height: 800, width: '100%' }}>
+      <DataGrid
+        rows={ tableData }
+        columns={ columns }
+        onRowClick={ handleClickRow }
+      />
+    </Box>
   )
 }

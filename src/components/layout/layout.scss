@@ -7,24 +7,13 @@ header {
   align-items: center;
 }
 
-.sidebar {
-  position: fixed;
-  min-height: 100vh;
-  overflow: hidden;
-  background-color: #000b;
-  border-right: 5px solid #222;
-}
-
 .content {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 main {
   flex: 1;
   padding: 1rem;
-  background-color: #0003;
+  background-color: #0006;
 }
 
 .menu {

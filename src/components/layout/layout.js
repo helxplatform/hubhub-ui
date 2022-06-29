@@ -1,43 +1,31 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { Toolbar } from '@mui/material'
 import helxLogo from '../../images/helx-logo.png'
-import { Menu } from './menu'
+import { useApp } from '../../context'
+import { ProjectDrawer } from '../project-drawer'
 import './layout.scss'
 
-const SIDEBAR = {
-  MAX_WIDTH: '200px',
-  MIN_WIDTH: '0',
-}
-
 export const Layout = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { drawerOpen } = useApp()
+
   return (
     <Fragment>
-      <div
-        className="sidebar"
-        style={{ width: sidebarOpen ? SIDEBAR.MAX_WIDTH : SIDEBAR.MIN_WIDTH }}
-      >
-        <Menu />
-      </div>
-      <div
-        className="content"
-        style={{ marginLeft: sidebarOpen ? SIDEBAR.MAX_WIDTH : SIDEBAR.MIN_WIDTH }}
-      >
-        <header>
-          <button
-            className="menu-toggler"
-            title="Toggle menu"
-            onClick={ () => setSidebarOpen(!sidebarOpen) }
-          >
-            { sidebarOpen ? 'x' : '☰' }
-          </button>
-          <Link to="/"><img src={ helxLogo } width="75" alt="" /></Link>
-        </header>
-        <main>
-          { children }
-        </main>
-      </div>
+      <Toolbar disableGutters sx={{
+        backgroundColor: '#222',
+        padding: '1rem',
+        display: 'flex',
+        gap: '1rem',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+        <Link to="/"><img src={ helxLogo } width="75" alt="" /></Link>
+      </Toolbar>
+      <main>
+        { children }
+      </main>
+      <ProjectDrawer open={ drawerOpen } />
     </Fragment>
   )
 }
