@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Box, LinearProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useApp } from '../context'
+import { Close } from '@mui/icons-material'
 
 const columns = [
   {
@@ -13,7 +14,7 @@ const columns = [
     field: 'tags',
     headerName: 'Latest Tag',
     width: 300,
-  }
+  },
 ]
 
 export const ProjectsView = () => {
@@ -39,10 +40,25 @@ export const ProjectsView = () => {
         columns={ columns }
         onRowClick={ handleClickRow }
         autoPageSize
+        loading={ isLoading }
         components={{
           LoadingOverlay: LinearProgress,
         }}
-        loading={ isLoading }
+        componentsProps={{
+          row: { style: {
+            cursor: 'pointer',
+            border: 0,
+          }}
+        }}
+        sx={{
+          '& .MuiDataGrid-cell': {
+            border: 0,
+            '&:focus': {
+              outline: 'none',
+            },
+          },
+          '& .MuiDataGrid-row:hover': { backgroundColor: 'rgba(25, 118, 210, 0.04)', },
+        }}
       />
     </Box>
   )

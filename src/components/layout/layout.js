@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Toolbar } from '@mui/material'
+import { AppBar, Toolbar } from '@mui/material'
 import helxLogo from '../../images/helx-logo.png'
 import { useApp } from '../../context'
 import { ProjectDrawer } from '../project-drawer'
@@ -12,16 +12,28 @@ export const Layout = ({ children }) => {
 
   return (
     <Fragment>
-      <Toolbar disableGutters sx={{
-        backgroundColor: '#222',
-        padding: '1rem',
-        display: 'flex',
-        gap: '1rem',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <Link to="/"><img src={ helxLogo } width="75" alt="" /></Link>
-      </Toolbar>
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: '#222',
+          padding: 0,
+        }}
+      >
+        <Toolbar disableGutters sx={{
+          width: '100%',
+          display: 'flex',
+          gap: '1rem',
+          justifyContent: 'space-between',
+          alignItems: 'stretch',
+          height: '64px',
+          '& a': {
+            height: '100%',
+            padding: '16px',
+          },
+        }}>
+          <Link to="/"><img src={ helxLogo } height="100%" alt="" /></Link>
+        </Toolbar>
+      </AppBar>
       <main>
         { children }
       </main>
