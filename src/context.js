@@ -19,7 +19,11 @@ export const AppContextProvider = ({ children }) => {
     setDrawerOpen(!!currentProjectID)
   }, [currentProjectID])
 
-  const closeDrawer = () => setDrawerOpen(false)
+  const closeDrawer = () => {
+    setDrawerOpen(false)
+    const unsetProject = setTimeout(() => setCurrentProjectID(null), 250)
+    return () => clearTimeout(unsetProject)
+  }
 
   return (
     <AppContext.Provider value={{ currentProjectID, setCurrentProjectID, drawerOpen, closeDrawer, projects, isLoading }}>
