@@ -32,7 +32,7 @@ export const ProjectsView = () => {
   }
 
   return (
-    <Box sx={{ height: 1200, width: '100%', paddingTop: '64px' }}>
+    <Box sx={{ width: '100%' }}>
       <DataGrid
         rows={ tableData }
         columns={ columns }
