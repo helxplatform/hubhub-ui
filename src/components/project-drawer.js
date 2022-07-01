@@ -1,15 +1,13 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { CardContent, Divider, Drawer, IconButton, Stack, Toolbar } from '@mui/material'
+import { CardContent, Divider, Drawer, IconButton, Stack, Toolbar, Typography } from '@mui/material'
 import { Close as CloseIcon } from '@mui/icons-material'
 import { useApp } from '../context'
 
 export const ProjectDrawer = ({ open }) => {
   const { projects, closeDrawer, currentProjectID } = useApp()
   
-  const project = useMemo(() => {
-    return projects[currentProjectID]
-  }, [currentProjectID])
+  const project = useMemo(() => projects[currentProjectID], [currentProjectID])
   
   return (
     <Drawer
@@ -24,6 +22,7 @@ export const ProjectDrawer = ({ open }) => {
           top: 0,
           backgroundColor: '#fff',
           borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+          minHeight: '64px',
         },
         '& .drawer-content': {
         },
@@ -42,13 +41,35 @@ export const ProjectDrawer = ({ open }) => {
             <CloseIcon />
           </IconButton>
           <Divider orientation="vertical" />
+          <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', padding: '0 1rem' }}>
+            { project?.repository_name || '...' }
+          </Typography>
         </Stack>
       </Toolbar>
-      <CardContent className="drawer-content">
-        <pre>
-          { JSON.stringify(project, null, 2) }
-        </pre>
-      </CardContent>
+      {
+        project && (
+          <CardContent className="drawer-content">
+            {
+              Object.keys(project.tags).map(key => {
+                const tag = project.tags[key]
+                return (
+                  <Fragment key={ `${ project.repository_name }-${ tag.tag_name}` }>
+                    <Typography variant="h4">{ tag.tag_name }</Typography>
+                    <pre style={{
+                      fontSize: '75%',
+                      backgroundColor: '#ddd',
+                      whiteSpace: 'pre-wrap',
+                      padding: '0.5rem',
+                    }}>
+                      { JSON.stringify(tag, null, 2) }
+                    </pre>
+                  </Fragment>
+                )
+              })
+            }
+          </CardContent>
+        )
+      }
     </Drawer>
   )
 }
