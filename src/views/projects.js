@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Box, LinearProgress } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { useApp } from '../context'
 
 const columns = [
@@ -32,7 +32,14 @@ export const ProjectsView = () => {
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{
+      width: '100%',
+      '& .MuiDataGrid-toolbarContainer': {
+        backgroundColor: '#0001',
+        padding: '0.5rem 1rem',
+        borderBottom: '1px solid #333',
+      }
+    }}>
       <DataGrid
         rows={ tableData }
         columns={ columns }
@@ -41,12 +48,19 @@ export const ProjectsView = () => {
         loading={ isLoading }
         components={{
           LoadingOverlay: LinearProgress,
+          Toolbar: GridToolbar,
         }}
         componentsProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: {
+              debounceMs: 500,
+            },
+          },
           row: { style: {
             cursor: 'pointer',
             border: 0,
-          }}
+          }},
         }}
         sx={{
           '& .MuiDataGrid-cell': {
