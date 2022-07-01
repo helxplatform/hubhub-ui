@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Box, LinearProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useApp } from '../context'
-import { Close } from '@mui/icons-material'
 
 const columns = [
   {
@@ -19,7 +18,6 @@ const columns = [
 
 export const ProjectsView = () => {
   const { projects, setCurrentProjectID, isLoading } = useApp()
-  const [pageSize, setPageSize] = useState(25)
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)

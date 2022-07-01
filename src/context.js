@@ -9,7 +9,7 @@ export const AppContextProvider = ({ children }) => {
   const [currentProjectID, setCurrentProjectID] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  const { isLoading, data } = useQuery('projects', () => 
+  const { isLoading } = useQuery('projects', () => 
     fetch('https://hubhub-jeffw.apps.renci.org/app/current')
       .then(response => response.json())
       .then(data => setProjects(data.projects))

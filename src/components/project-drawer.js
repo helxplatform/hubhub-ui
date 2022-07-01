@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { AppBar, CardContent, Divider, Drawer, IconButton, Stack, Toolbar } from '@mui/material'
+import { CardContent, Divider, Drawer, IconButton, Stack, Toolbar } from '@mui/material'
 import { Close as CloseIcon } from '@mui/icons-material'
 import { useApp } from '../context'
 
@@ -19,27 +19,32 @@ export const ProjectDrawer = ({ open }) => {
       PaperProps={{ sx: {
         width: 'calc(100% - 6rem)',
         maxWidth: '100%',
+        '& .drawer-header': {
+          position: 'sticky',
+          top: 0,
+          backgroundColor: '#fff',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+        },
+        '& .drawer-content': {
+        },
       } }}
     >
-      <AppBar position="static">
-        <Toolbar disableGutters>
-          <Stack
-            direction="row"
-            alignItems="stretch"
-            sx={{ height: '100%' }}
+      <Toolbar disableGutters className="drawer-header">
+        <Stack
+          direction="row"
+          alignItems="stretch"
+          sx={{ height: '100%' }}
+        >
+          <IconButton
+            onClick={ closeDrawer }
+            sx={{ borderRadius: 0, height: '100%', width: '64px' }}
           >
-            <IconButton
-              onClick={ closeDrawer }
-              sx={{ borderRadius: 0, height: '100%', width: '64px' }}
-            >
-              <CloseIcon />
-            </IconButton>
-            <Divider orientation="vertical" />
-          </Stack>
-        </Toolbar>
-      </AppBar>
-      <Divider />
-      <CardContent>
+            <CloseIcon />
+          </IconButton>
+          <Divider orientation="vertical" />
+        </Stack>
+      </Toolbar>
+      <CardContent className="drawer-content">
         <pre>
           { JSON.stringify(project, null, 2) }
         </pre>
