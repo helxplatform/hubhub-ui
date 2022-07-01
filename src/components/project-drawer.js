@@ -1,7 +1,14 @@
-import { Fragment, useMemo } from 'react'
+import { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { CardContent, Divider, Drawer, IconButton, Stack, Toolbar, Typography } from '@mui/material'
-import { Close as CloseIcon } from '@mui/icons-material'
+import {
+  Accordion, AccordionSummary, AccordionDetails,
+  CardContent, Divider, Drawer, IconButton,
+  Stack, Toolbar, Typography,
+} from '@mui/material'
+import {
+  Close as CloseIcon,
+  ExpandMore as ExpandIcon,
+} from '@mui/icons-material'
 import { useApp } from '../context'
 
 export const ProjectDrawer = ({ open }) => {
@@ -23,8 +30,10 @@ export const ProjectDrawer = ({ open }) => {
           backgroundColor: '#fff',
           borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
           minHeight: '64px',
+          zIndex: 9,
         },
         '& .drawer-content': {
+          padding: 0,
         },
       } }}
     >
@@ -50,20 +59,31 @@ export const ProjectDrawer = ({ open }) => {
         project && (
           <CardContent className="drawer-content">
             {
-              Object.keys(project.tags).map(key => {
+              Object.keys(project.tags).map((key, i) => {
                 const tag = project.tags[key]
                 return (
-                  <Fragment key={ `${ project.repository_name }-${ tag.tag_name}` }>
-                    <Typography variant="h4">{ tag.tag_name }</Typography>
-                    <pre style={{
-                      fontSize: '75%',
-                      backgroundColor: '#ddd',
-                      whiteSpace: 'pre-wrap',
-                      padding: '0.5rem',
-                    }}>
-                      { JSON.stringify(tag, null, 2) }
-                    </pre>
-                  </Fragment>
+                  <Accordion
+                    key={ `${ project.repository_name }-${ tag.tag_name }` }
+                    elevation={ 0 }
+                    defaultExpanded={ i === 0 }
+                  >
+                    <AccordionSummary
+                      expandIcon={ <ExpandIcon /> }
+                      aria-controls={ `${ tag.tag_name }-content` }
+                      id={ `${ tag.tag_name }-header` }
+                    >
+                      <Typography variant="h5">{ tag.tag_name }</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{ backgroundColor: '#ddd' }}>
+                      <pre style={{
+                        fontSize: '75%',
+                        whiteSpace: 'pre-wrap',
+                        padding: '0.5rem',
+                      }}>
+                        { JSON.stringify(tag, null, 2) }
+                      </pre>
+                    </AccordionDetails>
+                  </Accordion>
                 )
               })
             }
