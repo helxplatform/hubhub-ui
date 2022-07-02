@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   CardContent, Divider, Drawer, IconButton,
-  Stack, Toolbar, Typography,
+  Stack, Toolbar, Typography, useMediaQuery,
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -13,6 +13,7 @@ import { useApp } from '../context'
 
 export const ProjectDrawer = ({ open }) => {
   const { projects, closeDrawer, currentProjectID } = useApp()
+  const smallScreen = useMediaQuery(`(max-width: 600px)`)
   
   const project = useMemo(() => projects[currentProjectID], [currentProjectID])
   
@@ -22,8 +23,8 @@ export const ProjectDrawer = ({ open }) => {
       open={ open }
       onClose={ closeDrawer }
       PaperProps={{ sx: {
-        width: 'calc(100% - 6rem)',
-        maxWidth: '100%',
+        width: '100%',
+        maxWidth: smallScreen ? '100%' : 'calc(100% - 12rem)',
         '& .drawer-header': {
           position: 'sticky',
           top: 0,
