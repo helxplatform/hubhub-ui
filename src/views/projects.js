@@ -17,7 +17,7 @@ const columns = [
 ]
 
 export const ProjectsView = () => {
-  const { projects, setCurrentProjectID, isLoading } = useApp()
+  const { projects, setCurrentProjectID, isLoading, smallScreen } = useApp()
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)
@@ -35,9 +35,29 @@ export const ProjectsView = () => {
     <Box sx={{
       width: '100%',
       '& .MuiDataGrid-toolbarContainer': {
-        backgroundColor: '#0002',
-        padding: '0.5rem 1rem',
+        alignItems: 'stretch',
+        backgroundColor: '#3333',
+        padding: '4px 0 0 0',
         borderBottom: '1px solid #333',
+        filter: 'opacity(0.5)',
+        transition: 'filter 250ms',
+        '& > button': {
+          padding: '0 1rem',
+          borderRadius: 0,
+          '&:hover': {
+            backgroundColor: '#229aa522',
+          },
+        },
+        '&:hover': {
+          filter: 'opacity(1.0)',
+        },
+        '& .MuiFormControl-root': {
+          // flex: 1,
+          minWidth: '200px',
+          '& .MuiFormControl-root': {
+            border: 0,
+          },
+        },
       }
     }}>
       <DataGrid
@@ -45,6 +65,7 @@ export const ProjectsView = () => {
         columns={ columns }
         onRowClick={ handleClickRow }
         autoPageSize
+        disableColumnSelector
         loading={ isLoading }
         components={{
           LoadingOverlay: LinearProgress,

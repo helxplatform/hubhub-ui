@@ -15,7 +15,7 @@ export const Layout = ({ children }) => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: '#222',
+          backgroundColor: '#eee',
           padding: 0,
         }}
       >
