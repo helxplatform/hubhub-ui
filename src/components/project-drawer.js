@@ -26,8 +26,6 @@ export const ProjectDrawer = ({ open }) => {
         width: '100%',
         maxWidth: smallScreen ? '100%' : 'calc(100% - 12rem)',
         '& .drawer-header': {
-          position: 'sticky',
-          top: 0,
           backgroundColor: '#fff',
           borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
           minHeight: '64px',
@@ -35,6 +33,7 @@ export const ProjectDrawer = ({ open }) => {
         },
         '& .drawer-content': {
           padding: 0,
+          overflowY: 'auto',
         },
       } }}
     >
