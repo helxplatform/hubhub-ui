@@ -1,11 +1,5 @@
 import { createTheme } from '@mui/material/styles'
 
-const palette = {
-  primary: {
-    main: '#375b77',
-  }
-}
-
 const typography = {
   htmlFontSize: 16,
   h1: {
@@ -34,10 +28,45 @@ const shape = {
   borderRadius: 0,
 }
 
-export const theme = createTheme({
-  mode: 'light',
-  palette,
+export const lightTheme = {
+  palette: {
+    primary: {
+      main: '#375b77',
+    },
+    secondary: {
+      main: '#468',
+    },
+    background: {
+      default: '#ddd',
+      paper: '#eee',
+    },
+    text: {
+      primary: '#333',
+      secondary: '#666',
+    },
+  },
   typography,
   shape,
-})
+}
+
+export const darkTheme = {
+  palette: {
+    primary: {
+      main: '#678ba7',
+    },
+    secondary: {
+      main: '#468',
+    },
+    background: {
+      default: '#666',
+      paper: '#222',
+    },
+    text: {
+      primary: '#fff',
+      secondary: '#666',
+    },
+  },
+  typography,
+  shape,
+}
 

@@ -1,7 +1,7 @@
 import { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { AppBar, Switch, Toolbar, useTheme } from '@mui/material'
+import { AppBar, Box, Switch, Toolbar, useTheme } from '@mui/material'
 import helxLogo from '../../images/helx-logo.png'
 import { useApp } from '../../context'
 import { ProjectDrawer } from '../project-drawer'
@@ -62,7 +62,7 @@ export const Layout = ({ children }) => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: '#eee',
+          backgroundColor: theme.palette.background.paper,
           padding: 0,
         }}
       >
@@ -86,9 +86,11 @@ export const Layout = ({ children }) => {
           />
         </Toolbar>
       </AppBar>
-      <main>
+      <Box component="main" sx={{
+        backgroundColor: theme.palette.background.default,
+      }}>
         { children }
-      </main>
+      </Box>
       <ProjectDrawer open={ drawerOpen } />
     </Fragment>
   )

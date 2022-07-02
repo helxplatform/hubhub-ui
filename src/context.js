@@ -1,7 +1,9 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from 'react-query'
 import { useMediaQuery } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { lightTheme, darkTheme } from './theme'
 
 const AppContext = createContext({})
 
@@ -16,6 +18,12 @@ export const AppContextProvider = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const smallScreen = useMediaQuery(`(max-width: 600px)`)
   const [colorMode, setColorMode] = useState(MODES.light)
+
+  const theme = useMemo(() => createTheme({
+    palette: { colorMode },
+    ...(colorMode === MODES.light ? lightTheme : darkTheme),
+  }), [colorMode])
+
 
   const { isLoading } = useQuery('projects', () => 
     fetch('https://hubhub-jeffw.apps.renci.org/app/current')
@@ -51,7 +59,9 @@ export const AppContextProvider = ({ children }) => {
       smallScreen,
       MODES, colorMode, setColorMode, toggleColorMode,
     }}>
-      { children }
+      <ThemeProvider theme={ theme }>
+        { children }
+      </ThemeProvider>
     </AppContext.Provider>
   )
 }
