@@ -35,7 +35,7 @@ export const ProjectsView = () => {
     <Box sx={{
       width: '100%',
       '& .MuiDataGrid-toolbarContainer': {
-        backgroundColor: '#0001',
+        backgroundColor: '#0002',
         padding: '0.5rem 1rem',
         borderBottom: '1px solid #333',
       }
