@@ -43,7 +43,6 @@ export const ProjectsView = () => {
         transition: 'filter 250ms',
         '& > button': {
           padding: '0 1rem',
-          borderRadius: 0,
           '&:hover': {
             backgroundColor: '#229aa522',
           },
