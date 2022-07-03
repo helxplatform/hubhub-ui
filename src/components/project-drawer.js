@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   CardContent, Divider, Drawer, IconButton,
-  Stack, Toolbar, Typography,
+  Stack, Toolbar, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -14,6 +14,7 @@ import {
 import { useApp } from '../context'
 
 export const ProjectDrawer = ({ open }) => {
+  const theme = useTheme()
   const { projects, closeDrawer, currentProjectID, smallScreen } = useApp()
   const [expandedPanels, setExpandedPanels] = useState(new Set([0]))
 
@@ -53,26 +54,35 @@ export const ProjectDrawer = ({ open }) => {
         >
           <IconButton
             onClick={ closeDrawer }
+            color="primary"
             sx={{ borderRadius: 0, height: '100%', width: '64px' }}
           >
             <CloseIcon />
           </IconButton>
+
           <Divider orientation="vertical" />
-          <Typography variant="h4" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem' }}>
+          
+          <Typography variant="h4" color="primary" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem' }}>
             { project?.repository_name || '...' }
           </Typography>
+          
           <Divider orientation="vertical" />
+          
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
+            color="secondary"
             sx={{ borderRadius: 0, height: '100%', width: '32px' }}
           >
             <CollapseAllIcon />
           </IconButton>
+          
           <Divider orientation="vertical" />
+          
           <IconButton
             onClick={ handleClickExpandAll }
             disabled={ project && expandedPanels.size === Object.keys(project.tags).length }
+            color="secondary"
             sx={{ borderRadius: 0, height: '100%', width: '32px' }}
           >
             <ExpandAllIcon />
@@ -91,7 +101,6 @@ export const ProjectDrawer = ({ open }) => {
         width: '100%',
         maxWidth: smallScreen ? '100%' : 'calc(100% - 12rem)',
         '& .drawer-header': {
-          backgroundColor: '#fff',
           borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
           minHeight: '64px',
           zIndex: 9,
@@ -116,13 +125,13 @@ export const ProjectDrawer = ({ open }) => {
                 expanded={ expandedPanels.has(i) }
               >
                 <AccordionSummary
-                  expandIcon={ <ExpandIcon /> }
+                  expandIcon={ <ExpandIcon color="secondary" /> }
                   aria-controls={ `${ tag.tag_name }-content` }
                   id={ `${ tag.tag_name }-header` }
                 >
-                  <Typography variant="h5">{ tag.tag_name }</Typography>
+                  <Typography variant="h5" color="secondary">{ tag.tag_name }</Typography>
                 </AccordionSummary>
-                <AccordionDetails sx={{ backgroundColor: '#ddd' }}>
+                <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <pre style={{
                     fontSize: '75%',
                     whiteSpace: 'pre-wrap',
