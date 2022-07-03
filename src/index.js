@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { AppContextProvider } from './context'
-import { theme } from './theme'
 
 const container = document.getElementById('root')
 const root = createRoot(container)

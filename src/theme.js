@@ -1,5 +1,3 @@
-import { createTheme } from '@mui/material/styles'
-
 const typography = {
   htmlFontSize: 16,
   h1: {
@@ -31,10 +29,10 @@ const shape = {
 export const lightTheme = {
   palette: {
     primary: {
-      main: '#375b77',
+      main: '#356688',
     },
     secondary: {
-      main: '#468',
+      main: '#88353c',
     },
     background: {
       default: '#ddd',
@@ -52,10 +50,10 @@ export const lightTheme = {
 export const darkTheme = {
   palette: {
     primary: {
-      main: '#678ba7',
+      main: '#2a6574',
     },
     secondary: {
-      main: '#468',
+      main: '#944a3f',
     },
     background: {
       default: '#666',

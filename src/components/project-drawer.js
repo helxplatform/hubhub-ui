@@ -62,7 +62,7 @@ export const ProjectDrawer = ({ open }) => {
 
           <Divider orientation="vertical" />
           
-          <Typography variant="h4" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem' }}>
+          <Typography variant="h4" color="primary" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem' }}>
             { project?.repository_name || '...' }
           </Typography>
           
@@ -71,7 +71,7 @@ export const ProjectDrawer = ({ open }) => {
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
-            color="primary"
+            color="secondary"
             sx={{ borderRadius: 0, height: '100%', width: '32px' }}
           >
             <CollapseAllIcon />
@@ -82,7 +82,7 @@ export const ProjectDrawer = ({ open }) => {
           <IconButton
             onClick={ handleClickExpandAll }
             disabled={ project && expandedPanels.size === Object.keys(project.tags).length }
-            color="primary"
+            color="secondary"
             sx={{ borderRadius: 0, height: '100%', width: '32px' }}
           >
             <ExpandAllIcon />
@@ -125,11 +125,11 @@ export const ProjectDrawer = ({ open }) => {
                 expanded={ expandedPanels.has(i) }
               >
                 <AccordionSummary
-                  expandIcon={ <ExpandIcon /> }
+                  expandIcon={ <ExpandIcon color="secondary" /> }
                   aria-controls={ `${ tag.tag_name }-content` }
                   id={ `${ tag.tag_name }-header` }
                 >
-                  <Typography variant="h5">{ tag.tag_name }</Typography>
+                  <Typography variant="h5" color="secondary">{ tag.tag_name }</Typography>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <pre style={{

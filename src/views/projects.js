@@ -18,7 +18,7 @@ const columns = [
 
 export const ProjectsView = () => {
   const theme = useTheme()
-  const { projects, setCurrentProjectID, isLoading, smallScreen } = useApp()
+  const { projects, setCurrentProjectID, isLoading } = useApp()
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)
@@ -50,7 +50,10 @@ export const ProjectsView = () => {
             border: 0,
           },
         },
-      }
+      },
+      '& .MuiDataGrid-root': {
+        border: 0,
+      },
     }}>
       <DataGrid
         rows={ tableData }

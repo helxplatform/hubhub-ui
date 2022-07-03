@@ -2,10 +2,16 @@ import { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { AppBar, Box, Switch, Toolbar, useTheme } from '@mui/material'
-import helxLogo from '../../images/helx-logo.png'
+import helxLogoLight from '../../images/helx-logo-light.png'
+import helxLogoDark from '../../images/helx-logo-dark.png'
 import { useApp } from '../../context'
 import { ProjectDrawer } from '../project-drawer'
 import './layout.scss'
+
+const LOGOS = {
+  'light': helxLogoDark,
+  'dark': helxLogoLight,
+}
 
 export const Layout = ({ children }) => {
   const theme = useTheme()
@@ -78,7 +84,7 @@ export const Layout = ({ children }) => {
             padding: '16px',
           },
         }}>
-          <Link to="/"><img src={ helxLogo } height="100%" alt="" /></Link>
+          <Link to="/"><img src={ LOGOS[colorMode] } height="100%" alt="" /></Link>
           <Switch
             checked={ colorMode === MODES.dark }
             onChange={ () => setColorMode(event.target.checked ? MODES.dark : MODES.light) }
