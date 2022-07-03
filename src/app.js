@@ -1,10 +1,15 @@
-import { Fragment } from 'react'
-import { DemoComponent } from './components/demo-component'
+import { Layout } from './components/layout'
+import { Routes, Route } from 'react-router-dom'
+import {
+  ProjectsView,
+} from './views'
 
 export const App = () => {
   return (
-    <Fragment>
-      <DemoComponent />
-    </Fragment>
+    <Layout>
+      <Routes>
+        <Route path="/" element={ <ProjectsView /> } />
+      </Routes>
+    </Layout>
   )
 }

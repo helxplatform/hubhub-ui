@@ -34,9 +34,16 @@
     "webpack-dev-server": "^4.9.2"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.8.6",
+    "@mui/x-data-grid": "^5.12.3",
     "core-js": "^3.22.8",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-query": "^3.39.1",
+    "react-router-dom": "^6.3.0",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.52.3",
     "sass-loader": "^13.0.0"
