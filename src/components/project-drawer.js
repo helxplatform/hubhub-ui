@@ -54,7 +54,7 @@ export const ProjectDrawer = ({ open }) => {
         >
           <IconButton
             onClick={ closeDrawer }
-            color="primary"
+            color="secondary"
             sx={{ borderRadius: 0, height: '100%', width: '64px' }}
           >
             <CloseIcon />
@@ -62,7 +62,7 @@ export const ProjectDrawer = ({ open }) => {
 
           <Divider orientation="vertical" />
           
-          <Typography variant="h4" color="primary" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem' }}>
+          <Typography variant="h4" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem', color: theme.palette.text.primary }}>
             { project?.repository_name || '...' }
           </Typography>
           
@@ -129,7 +129,7 @@ export const ProjectDrawer = ({ open }) => {
                   aria-controls={ `${ tag.tag_name }-content` }
                   id={ `${ tag.tag_name }-header` }
                 >
-                  <Typography variant="h5" color="secondary">{ tag.tag_name }</Typography>
+                  <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>{ tag.tag_name }</Typography>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <pre style={{

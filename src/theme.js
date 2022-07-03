@@ -29,10 +29,10 @@ const shape = {
 export const lightTheme = {
   palette: {
     primary: {
-      main: '#356688',
+      main: '#0097a7',
     },
     secondary: {
-      main: '#88353c',
+      main: '#a1887f',
     },
     background: {
       default: '#ddd',
@@ -50,10 +50,10 @@ export const lightTheme = {
 export const darkTheme = {
   palette: {
     primary: {
-      main: '#2a6574',
+      main: '#0097a7',
     },
     secondary: {
-      main: '#944a3f',
+      main: '#a1887f',
     },
     background: {
       default: '#666',
@@ -61,7 +61,7 @@ export const darkTheme = {
     },
     text: {
       primary: '#fff',
-      secondary: '#666',
+      secondary: '#999',
     },
   },
   typography,
