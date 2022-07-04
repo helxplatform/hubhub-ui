@@ -17,7 +17,7 @@ export const AppContextProvider = ({ children }) => {
   const [currentProjectID, setCurrentProjectID] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const smallScreen = useMediaQuery(`(max-width: 600px)`)
-  const [colorMode, setColorMode] = useState(MODES.dark)
+  const [colorMode, setColorMode] = useState(MODES.light)
 
   const theme = useMemo(() => createTheme({
     ...(colorMode === MODES.light ? lightTheme : darkTheme),
