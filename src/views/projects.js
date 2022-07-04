@@ -38,6 +38,7 @@ export const ProjectsView = () => {
       '& .MuiDataGrid-toolbarContainer': {
         alignItems: 'stretch',
         backgroundColor: theme.palette.background.paper,
+        transition: 'background-color 300ms',
         padding: '4px 0 0 0',
         borderBottom: '1px solid #333',
         '& > button': {
