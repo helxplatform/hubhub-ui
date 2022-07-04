@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
-  CardContent, Divider, Drawer, IconButton,
+  Box, CardContent, Divider, Drawer, IconButton,
   Stack, Toolbar, Typography, useTheme, 
 } from '@mui/material'
 import {
@@ -10,8 +10,58 @@ import {
   ExpandMore as ExpandIcon,
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
+  GitHub as GitHubIcon,
 } from '@mui/icons-material'
 import { useApp } from '../context'
+
+//
+
+const Artifact = ({ location, digest }) => {
+  const theme = useTheme()
+  
+  return (
+    <Box sx={{
+      borderLeft: `1px solid ${ theme.palette.grey[400] }`,
+      padding: `0 ${ theme.spacing(1) }`,
+    }}>
+      <Typography sx={{ fontStyle: 'italic' }}>{ location }</Typography>
+      <Typography>digest: { digest }</Typography>
+    </Box>
+  )
+}
+
+Artifact.propTypes = {
+  location: PropTypes.string.isRequired,
+  digest: PropTypes.string.isRequired,
+}
+
+//
+
+const Tag = ({ tag_name, github_commit_hash, artifacts }) => {
+  const theme = useTheme()
+
+  return (
+    <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: theme.spacing(1), fontSize: '80%', margin: `${ theme.spacing(1) } 0` }}>
+        <GitHubIcon fontSize="small" color={ github_commit_hash ? 'primary' : 'default' } /> { github_commit_hash || <em>hash unknown</em> }
+      </Box>
+      <Typography color="primary" variant="h6">Artifacts</Typography>
+      {
+        Object.keys(artifacts).length
+          ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ artifacts[key] }` } location={ key } { ...artifacts[key] } />)
+          : <Typography>None</Typography>
+      }
+    </Box>
+  )
+}
+
+Tag.propTypes = {
+  tag_name: PropTypes.string.isRequired,
+  github_commit_hash: PropTypes.string,
+  artifacts: PropTypes.string.isRequired,
+}
+
+//
 
 export const ProjectDrawer = ({ open }) => {
   const theme = useTheme()
@@ -62,7 +112,7 @@ export const ProjectDrawer = ({ open }) => {
 
           <Divider orientation="vertical" />
           
-          <Typography variant="h4" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem', color: theme.palette.text.primary }}>
+          <Typography variant="h3" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem', color: theme.palette.text.primary }}>
             { project?.repository_name || '...' }
           </Typography>
           
@@ -132,13 +182,7 @@ export const ProjectDrawer = ({ open }) => {
                   <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>{ tag.tag_name }</Typography>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                  <pre style={{
-                    fontSize: '75%',
-                    whiteSpace: 'pre-wrap',
-                    padding: '0.5rem',
-                  }}>
-                    { JSON.stringify(tag, null, 2) }
-                  </pre>
+                  <Tag { ...tag } />
                 </AccordionDetails>
               </Accordion>
             )
