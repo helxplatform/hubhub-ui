@@ -37,13 +37,21 @@ Artifact.propTypes = {
 
 //
 
-const Tag = ({ tag_name, github_commit_hash, artifacts }) => {
+const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
   const theme = useTheme()
 
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: theme.spacing(1), fontSize: '80%', margin: `${ theme.spacing(1) } 0` }}>
-        <GitHubIcon fontSize="small" color={ github_commit_hash ? 'primary' : 'default' } /> { github_commit_hash || <em>hash unknown</em> }
+        <GitHubIcon color={ github_commit_hash ? 'primary' : 'default' } />
+        <Stack>
+          <a href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` } target="_blank" rel="noopener noreferrer">{ tag_name }</a>
+          {
+            github_commit_hash
+              ? <a href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` } target="_blank" rel="noopener noreferrer">{ github_commit_hash }</a>
+              : <em>hash unknown</em>
+          }
+        </Stack>
       </Box>
       <Typography color="primary" variant="h6">Artifacts</Typography>
       {
@@ -55,7 +63,7 @@ const Tag = ({ tag_name, github_commit_hash, artifacts }) => {
   )
 }
 
-Tag.propTypes = {
+TagDetails.propTypes = {
   tag_name: PropTypes.string.isRequired,
   github_commit_hash: PropTypes.string,
   artifacts: PropTypes.string.isRequired,
@@ -179,10 +187,12 @@ export const ProjectDrawer = ({ open }) => {
                   aria-controls={ `${ tag.tag_name }-content` }
                   id={ `${ tag.tag_name }-header` }
                 >
-                  <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>{ tag.tag_name }</Typography>
+                  <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
+                    { tag.tag_name }
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                  <Tag { ...tag } />
+                  <TagDetails { ...tag } />
                 </AccordionDetails>
               </Accordion>
             )
