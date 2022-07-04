@@ -13,6 +13,15 @@ import {
   GitHub as GitHubIcon,
 } from '@mui/icons-material'
 import { useApp } from '../context'
+import dockerLogo from '../images/docker-logo.svg'
+import renciDash from '../images/renci-dash.svg'
+
+//
+
+const ARTIFACT_LOGO = {
+  dockerhub: <img src={ dockerLogo } width="16" />,
+  containers: <img src={ renciDash } width="16" />,
+}
 
 //
 
@@ -21,11 +30,17 @@ const Artifact = ({ location, digest }) => {
   
   return (
     <Box sx={{
-      borderLeft: `1px solid ${ theme.palette.grey[400] }`,
       padding: `0 ${ theme.spacing(1) }`,
+      display: 'flex',
+      alignItems: 'center',
+      gap: theme.spacing(1),
+      '& .location': {},
+      '& .digest': {
+        flex: 1,
+      },
     }}>
-      <Typography sx={{ fontStyle: 'italic' }}>{ location }</Typography>
-      <Typography>digest: { digest }</Typography>
+      <Box className="location">{ ARTIFACT_LOGO[location] }</Box>
+      <Typography className="digest">{ digest }</Typography>
     </Box>
   )
 }
