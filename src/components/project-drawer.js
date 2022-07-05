@@ -236,7 +236,8 @@ export const ProjectDrawer = ({ open }) => {
                     href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag.tag_name }` }
                     target="_blank"
                     rel="noopener noreferrer"
-                  ><LinkIcon /></IconButton>
+                    sx={{ color: 'text.secondary' }}
+                  ><LinkIcon sx={{ fontSize: 16 }} /></IconButton>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <TagDetails { ...tag } />
