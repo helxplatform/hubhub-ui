@@ -33,11 +33,11 @@ export const lightTheme = {
       main: '#36688b',
     },
     secondary: {
-      main: '#6E368B',
+      main: '#ab7629',
     },
     background: {
-      default: '#ddd',
-      paper: '#eee',
+      default: '#e7efdd',
+      paper: '#f7ffed',
     },
     text: {
       primary: '#333',
@@ -54,11 +54,11 @@ export const darkTheme = {
       main: '#0097a7',
     },
     secondary: {
-      main: '#6E368B',
+      main: '#ab7629',
     },
     background: {
-      default: '#444',
-      paper: '#222',
+      default: '#272f3d',
+      paper: '#171f2d',
     },
     text: {
       primary: '#fff',

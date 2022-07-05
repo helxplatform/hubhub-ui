@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Stack, Toolbar, Typography, useTheme, 
+  Link, Stack, Toolbar, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -19,8 +19,8 @@ import renciDash from '../images/renci-dash.svg'
 //
 
 const ARTIFACT_LOGO = {
-  dockerhub: <img src={ dockerLogo } width="16" />,
-  containers: <img src={ renciDash } width="16" />,
+  dockerhub: <img src={ dockerLogo } width="28" />,
+  containers: <img src={ renciDash } width="28" />,
 }
 
 //
@@ -57,14 +57,40 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: theme.spacing(1), fontSize: '80%', margin: `${ theme.spacing(1) } 0` }}>
-        <GitHubIcon color={ github_commit_hash ? 'primary' : 'default' } />
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1),
+        margin: `${ theme.spacing(1) } 0`,
+        '& a': {
+          textDecoration: 'underline',
+          fontSize: '80%',
+        },
+        '& .unknown-hash': {
+          color: theme.palette.grey[600],
+          fontStyle: 'italic',
+          fontSize: '80%',
+        }
+      }}>
+        <GitHubIcon
+          fontSize="large"
+          sx={{ color: github_commit_hash ? theme.palette.primary.light : theme.palette.grey[400] }}
+        />
         <Stack>
-          <a href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` } target="_blank" rel="noopener noreferrer">{ tag_name }</a>
+          <Link
+            href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` }
+            target="_blank"
+            rel="noopener noreferrer"
+          >{ tag_name }</Link>
           {
             github_commit_hash
-              ? <a href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` } target="_blank" rel="noopener noreferrer">{ github_commit_hash }</a>
-              : <em>hash unknown</em>
+              ? (
+                <Link
+                  href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{ github_commit_hash }</Link>
+              ) : <Typography className="unknown-hash">hash unknown</Typography>
           }
         </Stack>
       </Box>
