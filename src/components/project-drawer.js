@@ -11,6 +11,7 @@ import {
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
   GitHub as GitHubIcon,
+  Link as LinkIcon,
 } from '@mui/icons-material'
 import { useApp } from '../context'
 import dockerLogo from '../images/docker-logo.svg'
@@ -19,8 +20,8 @@ import renciDash from '../images/renci-dash.svg'
 //
 
 const ARTIFACT_LOGO = {
-  dockerhub: <img src={ dockerLogo } width="28" />,
-  containers: <img src={ renciDash } width="28" />,
+  dockerhub: <img src={ dockerLogo } width="16" />,
+  containers: <img src={ renciDash } width="16" />,
 }
 
 //
@@ -37,6 +38,7 @@ const Artifact = ({ location, digest }) => {
       '& .location': {},
       '& .digest': {
         flex: 1,
+        color: theme.palette.text.secondary,
       },
     }}>
       <Box className="location">{ ARTIFACT_LOGO[location] }</Box>
@@ -66,39 +68,32 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
           textDecoration: 'underline',
           fontSize: '80%',
         },
-        '& .unknown-hash': {
-          color: theme.palette.grey[600],
+        '& .hash': {
+          color: theme.palette.text.secondary,
           fontStyle: 'italic',
           fontSize: '80%',
         }
       }}>
         <GitHubIcon
-          fontSize="large"
-          sx={{ color: github_commit_hash ? theme.palette.primary.light : theme.palette.grey[400] }}
+          sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
-        <Stack>
-          <Link
-            href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` }
-            target="_blank"
-            rel="noopener noreferrer"
-          >{ tag_name }</Link>
-          {
-            github_commit_hash
-              ? (
-                <Link
-                  href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >{ github_commit_hash }</Link>
-              ) : <Typography className="unknown-hash">hash unknown</Typography>
-          }
-        </Stack>
+        {
+          github_commit_hash
+            ? (
+              <Link
+                href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
+                className="hash"
+                target="_blank"
+                rel="noopener noreferrer"
+              >{ github_commit_hash }</Link>
+            ) : <Typography className="hash">hash unknown</Typography>
+        }
       </Box>
-      <Typography color="primary" variant="h6">Artifacts</Typography>
+      <Typography sx={{ color: 'text.primary' }} variant="h6">Artifacts</Typography>
       {
         Object.keys(artifacts).length
           ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ artifacts[key] }` } location={ key } { ...artifacts[key] } />)
-          : <Typography>None</Typography>
+          : <Typography sx={{ color: 'text.secondary' }}>None</Typography>
       }
     </Box>
   )
@@ -206,8 +201,13 @@ export const ProjectDrawer = ({ open }) => {
         },
         '& .drawer-content': {
           padding: 0,
-          overflowY: 'auto',
+          overflow: 'auto',
         },
+        '& .MuiAccordionSummary-content': {
+          display: 'flex',
+          gap: '1rem',
+          alignItems: 'center',
+        }
       } }}
     >
       <DrawerHeader />
@@ -231,6 +231,12 @@ export const ProjectDrawer = ({ open }) => {
                   <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
                     { tag.tag_name }
                   </Typography>
+                  <IconButton link
+                    size="small"
+                    href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag.tag_name }` }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  ><LinkIcon /></IconButton>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <TagDetails { ...tag } />
