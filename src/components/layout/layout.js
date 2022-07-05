@@ -70,6 +70,7 @@ export const Layout = ({ children }) => {
         sx={{
           backgroundColor: theme.palette.background.paper,
           padding: 0,
+          transition: 'background-color 200ms',
         }}
       >
         <Toolbar disableGutters sx={{
@@ -94,6 +95,7 @@ export const Layout = ({ children }) => {
       </AppBar>
       <Box component="main" sx={{
         backgroundColor: theme.palette.background.default,
+        transition: 'background-color 400ms',
       }}>
         { children }
       </Box>
