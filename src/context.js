@@ -4,6 +4,7 @@ import { useQuery } from 'react-query'
 import { useMediaQuery } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { lightTheme, darkTheme } from './theme'
+import { useLocalStorage } from './hooks'
 
 const AppContext = createContext({})
 
@@ -17,8 +18,8 @@ export const AppContextProvider = ({ children }) => {
   const [currentProjectID, setCurrentProjectID] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const smallScreen = useMediaQuery(`(max-width: 600px)`)
-  const [colorMode, setColorMode] = useState(MODES.light)
-  const [onlyConnected, setOnlyConnected] = useState(true)
+  const [colorMode, setColorMode] = useLocalStorage('colorMode', MODES.light)
+  const [onlyConnected, setOnlyConnected] = useLocalStorage('onlyConnected', true)
 
   const theme = useMemo(() => createTheme({
     ...(colorMode === MODES.light ? lightTheme : darkTheme),
