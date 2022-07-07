@@ -23,29 +23,27 @@ export const Artifact = ({ location, digest }) => {
       padding: `0 ${ theme.spacing(1) }`,
       display: 'flex',
       alignItems: 'center',
+      overflow: 'auto',
       gap: theme.spacing(1),
       '& .location-logo': {
         display: 'flex',
+        flex: '0 0 32px',
         height: '32px',
-        width: '32px',
         backgroundPosition: 'center center',
         backgroundSize: '32px 32px',
       },
       '& .location': {
-        lineHeight: 1.1,
       },
       '& .digest': {
-        lineHeight: 1.1,
         flex: 1,
         color: theme.palette.text.secondary,
-        fontSize: '75%',
       },
     }}>
       <Box
         className="location-logo"
         sx={{ backgroundImage: `url("${ ARTIFACT_LOGO[location] }")` }}
       />
-      <Stack>
+      <Stack sx={{ flex: 1 }}>
         <Typography className="location" variant="caption">{ ARTIFACT_LOCATION[location] }</Typography>
         <Typography className="digest">{ digest }</Typography>
       </Stack>

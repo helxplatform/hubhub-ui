@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Link, Stack, Toolbar, Typography, useTheme, 
+  Link, Stack, Toolbar, Tooltip, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -11,6 +11,8 @@ import {
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
   GitHub as GitHubIcon,
+  Star as ConnectedIcon,
+  Circle as DisconnectedIcon,
 } from '@mui/icons-material'
 import { useApp } from '../../context'
 
@@ -46,7 +48,7 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
             href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` }
             target="_blank"
             rel="noopener noreferrer"
-          >{ tag_name }</Link>
+          >helxplatform/tycho/releases/tag/{ tag_name }</Link>
 
           {
             github_commit_hash
@@ -205,6 +207,13 @@ export const ProjectDrawer = ({ open }) => {
                   <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
                     { tag.tag_name }
                   </Typography>
+                  <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
+                    {
+                      tag.is_connected
+                        ? <ConnectedIcon color="primary" />
+                        : <DisconnectedIcon color="secondary" sx={{ filter: 'opacity(0.1)' }} />
+                    }
+                  </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <TagDetails { ...tag } />
