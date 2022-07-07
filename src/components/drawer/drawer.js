@@ -20,7 +20,7 @@ import { Artifact } from './artifact'
 
 //
 
-const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
+const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
   const theme = useTheme()
 
   return (
@@ -45,10 +45,10 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
         />
         <Stack>
           <Link 
-            href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` }
+            href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
             target="_blank"
             rel="noopener noreferrer"
-          >helxplatform/tycho/releases/tag/{ tag_name }</Link>
+          >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
 
           {
             github_commit_hash
@@ -77,6 +77,7 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
 
 TagDetails.propTypes = {
   tag_name: PropTypes.string.isRequired,
+  repo: PropTypes.string.isRequired,
   github_commit_hash: PropTypes.string,
   artifacts: PropTypes.string.isRequired,
 }
@@ -216,7 +217,7 @@ export const ProjectDrawer = ({ open }) => {
                   </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                  <TagDetails { ...tag } />
+                  <TagDetails repo={ project.repository_name } { ...tag } />
                 </AccordionDetails>
               </Accordion>
             )
