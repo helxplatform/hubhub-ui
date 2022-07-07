@@ -3,22 +3,44 @@ import { Box, LinearProgress, useTheme } from '@mui/material'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { useApp } from '../context'
 
-const columns = [
-  {
-    field: 'id',
-    headerName: 'Repository',
-    flex: 1,
-  },
-  {
-    field: 'tags',
-    headerName: 'Latest Tag',
-    width: 300,
-  },
-]
-
 export const ProjectsView = () => {
   const theme = useTheme()
   const { isLoading, onlyConnected, projects, setCurrentProjectID } = useApp()
+
+  const countTags = (params, connected) => {
+
+    if (connected) {
+      return Object.keys(projects[params.row.id].tags)
+        .filter(tag => projects[params.row.id].tags[tag].is_connected)
+        .length
+    }
+    return Object.keys(projects[params.row.id].tags).length
+  }
+
+  const columns = useMemo(() => [
+    {
+      field: 'id',
+      headerName: 'Repository',
+      flex: 1,
+    },
+    {
+      field: 'latest-tag',
+      headerName: 'Latest Tag',
+      width: 100,
+    },
+    {
+      field: 'all-tags',
+      headerName: '# Tags',
+      width: 100,
+      valueGetter: params => countTags(params),
+    },
+    {
+      field: 'connected-tags',
+      headerName: '# Connection',
+      width: 175,
+      valueGetter: params => countTags(params, true),
+    },
+  ], [projects])
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)
