@@ -53,7 +53,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
             github_commit_hash
               ? (
                 <Link
-                  href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
+                  href={ `https://github.com/helxplatform/${ repo }/commit/${ github_commit_hash }` }
                   className="hash"
                   target="_blank"
                   rel="noopener noreferrer"
