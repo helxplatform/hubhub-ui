@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Link, Stack, Toolbar, Typography, useTheme, 
+  Link, Stack, Switch, Toolbar, Tooltip, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -11,52 +11,19 @@ import {
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
   GitHub as GitHubIcon,
+  Circle as ConnectedIcon,
 } from '@mui/icons-material'
-import { useApp } from '../context'
-import dockerLogo from '../images/docker-logo.svg'
-import renciDash from '../images/renci-dash.svg'
+import { useApp } from '../../context'
+
+import { Artifact } from './artifact'
 
 //
 
-const ARTIFACT_LOGO = {
-  dockerhub: <img src={ dockerLogo } width="28" />,
-  containers: <img src={ renciDash } width="28" />,
-}
-
-//
-
-const Artifact = ({ location, digest }) => {
-  const theme = useTheme()
-  
-  return (
-    <Box sx={{
-      padding: `0 ${ theme.spacing(1) }`,
-      display: 'flex',
-      alignItems: 'center',
-      gap: theme.spacing(1),
-      '& .location': {},
-      '& .digest': {
-        flex: 1,
-      },
-    }}>
-      <Box className="location">{ ARTIFACT_LOGO[location] }</Box>
-      <Typography className="digest">{ digest }</Typography>
-    </Box>
-  )
-}
-
-Artifact.propTypes = {
-  location: PropTypes.string.isRequired,
-  digest: PropTypes.string.isRequired,
-}
-
-//
-
-const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
+const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
   const theme = useTheme()
 
   return (
-    <Box>
+    <Fragment>
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
@@ -66,48 +33,52 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
           textDecoration: 'underline',
           fontSize: '80%',
         },
-        '& .unknown-hash': {
-          color: theme.palette.grey[600],
+        '& .hash': {
+          color: theme.palette.text.secondary,
           fontStyle: 'italic',
           fontSize: '80%',
         }
       }}>
         <GitHubIcon
-          fontSize="large"
-          sx={{ color: github_commit_hash ? theme.palette.primary.light : theme.palette.grey[400] }}
+          sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
         <Stack>
-          <Link
-            href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` }
+          <Link 
+            href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
             target="_blank"
             rel="noopener noreferrer"
-          >{ tag_name }</Link>
+          >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
+
           {
             github_commit_hash
               ? (
                 <Link
                   href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
+                  className="hash"
                   target="_blank"
                   rel="noopener noreferrer"
                 >{ github_commit_hash }</Link>
-              ) : <Typography className="unknown-hash">hash unknown</Typography>
+              ) : <Typography className="hash">hash unknown</Typography>
           }
         </Stack>
       </Box>
-      <Typography color="primary" variant="h6">Artifacts</Typography>
+
+      <Typography sx={{ color: 'text.primary' }} variant="h6">Artifacts</Typography>
+      
       {
         Object.keys(artifacts).length
           ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ artifacts[key] }` } location={ key } { ...artifacts[key] } />)
-          : <Typography>None</Typography>
+          : <Typography sx={{ color: 'text.secondary', fontStyle: 'italic' }}>None</Typography>
       }
-    </Box>
+    </Fragment>
   )
 }
 
 TagDetails.propTypes = {
   tag_name: PropTypes.string.isRequired,
+  repo: PropTypes.string.isRequired,
   github_commit_hash: PropTypes.string,
-  artifacts: PropTypes.string.isRequired,
+  artifacts: PropTypes.object.isRequired,
 }
 
 //
@@ -116,8 +87,23 @@ export const ProjectDrawer = ({ open }) => {
   const theme = useTheme()
   const { projects, closeDrawer, currentProjectID, smallScreen } = useApp()
   const [expandedPanels, setExpandedPanels] = useState(new Set([0]))
+  const [hideDisconnectedTags, setHideDisconnectedTags] = useState(true)
 
   const project = useMemo(() => projects[currentProjectID], [currentProjectID])
+
+  const visibleTags = useMemo(() => {
+    if (!project) { return {} }
+    if (hideDisconnectedTags) {
+      return Object.keys(project.tags)
+        .reduce((acc, key) => {
+          if (project.tags[key].is_connected) {
+            return { ...acc, [key]: project.tags[key] }
+          }
+          return { ...acc }
+        }, {})
+    }
+    return { ...project.tags }
+  }, [hideDisconnectedTags, project])
 
   useEffect(() => {
     setExpandedPanels(new Set([0]))
@@ -167,6 +153,35 @@ export const ProjectDrawer = ({ open }) => {
           
           <Divider orientation="vertical" />
           
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: theme.spacing(2),
+          }}>
+            <Box sx={{ textAlign: 'right' }}>
+              <Box sx={{
+                fontSize: '85%',
+                filter: `opacity(${ hideDisconnectedTags ? '1.0' : '0.25' })`,
+                color: theme.palette.success.main,
+              }}
+              >Connected</Box>
+              <Box sx={{
+                fontSize: '85%',
+                filter: `opacity(${ hideDisconnectedTags ? '0.25' : '1.0' })`,
+              }}
+              >All</Box>
+            </Box>
+            <Switch
+              onChange={ event => setHideDisconnectedTags(event.target.checked) }
+              color="primary"
+              size="small"
+              checked={ hideDisconnectedTags }
+              sx={{ transform: 'rotate(-90deg)' }}
+            />
+          </Box>
+          
+          <Divider orientation="vertical" />
+          
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
@@ -189,7 +204,7 @@ export const ProjectDrawer = ({ open }) => {
         </Stack>
       </Toolbar>
     )
-  }, [project, expandedPanels])
+  }, [hideDisconnectedTags, expandedPanels, project])
 
   return (
     <Drawer
@@ -206,14 +221,19 @@ export const ProjectDrawer = ({ open }) => {
         },
         '& .drawer-content': {
           padding: 0,
-          overflowY: 'auto',
+          overflow: 'auto',
         },
+        '& .MuiAccordionSummary-content': {
+          display: 'flex',
+          gap: '1rem',
+          alignItems: 'center',
+        }
       } }}
     >
       <DrawerHeader />
       <CardContent className="drawer-content">
         {
-          project ? Object.keys(project.tags).map((key, i) => {
+          project ? Object.keys(visibleTags).map((key, i) => {
             const tag = project.tags[key]
             return (
               <Accordion
@@ -231,9 +251,12 @@ export const ProjectDrawer = ({ open }) => {
                   <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
                     { tag.tag_name }
                   </Typography>
+                  <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
+                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } />
+                  </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                  <TagDetails { ...tag } />
+                  <TagDetails repo={ project.repository_name } { ...tag } />
                 </AccordionDetails>
               </Accordion>
             )

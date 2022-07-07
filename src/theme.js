@@ -20,6 +20,7 @@ const typography = {
   h6: {
     fontSize: '1rem',
     color: '#333',
+    marginBottom: '4px',
   },
 }
 
@@ -43,6 +44,9 @@ export const lightTheme = {
       primary: '#333',
       secondary: '#666',
     },
+    success: {
+      main: '#368b77',
+    },
   },
   typography,
   shape,
@@ -54,7 +58,7 @@ export const darkTheme = {
       main: '#0097a7',
     },
     secondary: {
-      main: '#ab7629',
+      main: '#e7efdd',
     },
     background: {
       default: '#272f3d',

@@ -48,8 +48,6 @@ export const AppContextProvider = ({ children }) => {
     setColorMode(MODES.light)
   }, [colorMode])
 
-  console.log(colorMode)
-
   return (
     <AppContext.Provider value={{
       currentProjectID, setCurrentProjectID,
