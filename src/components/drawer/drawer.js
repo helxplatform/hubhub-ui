@@ -252,7 +252,7 @@ export const ProjectDrawer = ({ open }) => {
                     { tag.tag_name }
                   </Typography>
                   <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
-                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } />
+                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" />
                   </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
