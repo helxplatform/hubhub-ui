@@ -28,7 +28,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         display: 'flex',
         alignItems: 'center',
         gap: theme.spacing(1),
-        margin: `${ theme.spacing(1) } 0`,
+        margin: `${ theme.spacing(2) } 0`,
         '& a': {
           textDecoration: 'underline',
           fontSize: '80%',
@@ -42,7 +42,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         <GitHubIcon
           sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
-        <Stack>
+        <Stack spacing={ 0.5 }>
           <Link 
             href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
             target="_blank"
@@ -63,7 +63,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         </Stack>
       </Box>
 
-      <Typography sx={{ color: 'text.primary' }} variant="h6">Artifacts</Typography>
+      <Divider>Artifacts</Divider>
       
       {
         Object.keys(artifacts).length

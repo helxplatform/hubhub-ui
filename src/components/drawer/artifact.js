@@ -20,11 +20,11 @@ export const Artifact = ({ location, digest }) => {
   
   return (
     <Box sx={{
-      padding: `0 ${ theme.spacing(1) }`,
       display: 'flex',
       alignItems: 'center',
       overflow: 'auto',
       gap: theme.spacing(1),
+      padding: `${ theme.spacing(1) } 0`,
       '& .location-logo': {
         display: 'flex',
         flex: '0 0 32px',
