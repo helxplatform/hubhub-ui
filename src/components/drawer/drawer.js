@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Link, Stack, Toolbar, Tooltip, Typography, useTheme, 
+  Link, Stack, Switch, Toolbar, Tooltip, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -79,7 +79,7 @@ TagDetails.propTypes = {
   tag_name: PropTypes.string.isRequired,
   repo: PropTypes.string.isRequired,
   github_commit_hash: PropTypes.string,
-  artifacts: PropTypes.string.isRequired,
+  artifacts: PropTypes.object.isRequired,
 }
 
 //
@@ -88,8 +88,23 @@ export const ProjectDrawer = ({ open }) => {
   const theme = useTheme()
   const { projects, closeDrawer, currentProjectID, smallScreen } = useApp()
   const [expandedPanels, setExpandedPanels] = useState(new Set([0]))
+  const [hideDisconnectedTags, setHideDisconnectedTags] = useState(true)
 
   const project = useMemo(() => projects[currentProjectID], [currentProjectID])
+
+  const visibleTags = useMemo(() => {
+    if (!project) { return {} }
+    if (hideDisconnectedTags) {
+      return Object.keys(project.tags)
+        .reduce((acc, key) => {
+          if (project.tags[key].is_connected) {
+            return { ...acc, [key]: project.tags[key] }
+          }
+          return { ...acc }
+        }, {})
+    }
+    return { ...project.tags }
+  }, [hideDisconnectedTags, project])
 
   useEffect(() => {
     setExpandedPanels(new Set([0]))
@@ -139,6 +154,34 @@ export const ProjectDrawer = ({ open }) => {
           
           <Divider orientation="vertical" />
           
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: theme.spacing(2),
+          }}>
+            <Box sx={{ textAlign: 'right' }}>
+              <Box sx={{
+                fontSize: '85%',
+                filter: `opacity(${ hideDisconnectedTags ? '1.0' : '0.25' })`,
+              }}
+              >Connected</Box>
+              <Box sx={{
+                fontSize: '85%',
+                filter: `opacity(${ hideDisconnectedTags ? '0.25' : '1.0' })`,
+              }}
+              >All</Box>
+            </Box>
+            <Switch
+              onChange={ event => setHideDisconnectedTags(event.target.checked) }
+              color="secondary"
+              size="small"
+              checked={ hideDisconnectedTags }
+              sx={{ transform: 'rotate(-90deg)' }}
+            />
+          </Box>
+          
+          <Divider orientation="vertical" />
+          
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
@@ -161,7 +204,7 @@ export const ProjectDrawer = ({ open }) => {
         </Stack>
       </Toolbar>
     )
-  }, [project, expandedPanels])
+  }, [hideDisconnectedTags, expandedPanels, project])
 
   return (
     <Drawer
@@ -190,7 +233,7 @@ export const ProjectDrawer = ({ open }) => {
       <DrawerHeader />
       <CardContent className="drawer-content">
         {
-          project ? Object.keys(project.tags).map((key, i) => {
+          project ? Object.keys(visibleTags).map((key, i) => {
             const tag = project.tags[key]
             return (
               <Accordion
