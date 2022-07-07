@@ -18,15 +18,19 @@ const columns = [
 
 export const ProjectsView = () => {
   const theme = useTheme()
-  const { projects, setCurrentProjectID, isLoading } = useApp()
+  const { isLoading, onlyConnected, projects, setCurrentProjectID } = useApp()
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)
+      .filter(key => onlyConnected
+        ? Object.keys(projects[key].tags).some(tag => Object.keys(projects[key].tags) && projects[key].tags[tag].is_connected)
+        : key
+      )
       .map(key => ({
         id: projects[key].repository_name,
         tags: Object.keys(projects[key].tags)[0],
       }))
-    : [], [projects])
+    : [], [onlyConnected, projects])
 
   const handleClickRow = data => {
     setCurrentProjectID(data.id)
