@@ -26,12 +26,12 @@ export const ProjectsView = () => {
     {
       field: 'latest-tag',
       headerName: 'Latest Tag',
-      width: 100,
+      width: 200,
     },
     {
       field: 'all-tags',
       headerName: '# Tags',
-      width: 100,
+      width: 125,
       valueGetter: params => countTags(params),
     },
     {
