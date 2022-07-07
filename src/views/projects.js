@@ -36,7 +36,7 @@ export const ProjectsView = () => {
     },
     {
       field: 'connected-tags',
-      headerName: '# Connection',
+      headerName: '# Connections',
       width: 175,
       valueGetter: params => countTags(params, true),
     },
