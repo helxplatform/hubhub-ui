@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
@@ -11,46 +11,10 @@ import {
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
   GitHub as GitHubIcon,
-  Link as LinkIcon,
 } from '@mui/icons-material'
-import { useApp } from '../context'
-import dockerLogo from '../images/docker-logo.svg'
-import renciDash from '../images/renci-dash.svg'
+import { useApp } from '../../context'
 
-//
-
-const ARTIFACT_LOGO = {
-  dockerhub: <img src={ dockerLogo } width="16" />,
-  containers: <img src={ renciDash } width="16" />,
-}
-
-//
-
-const Artifact = ({ location, digest }) => {
-  const theme = useTheme()
-  
-  return (
-    <Box sx={{
-      padding: `0 ${ theme.spacing(1) }`,
-      display: 'flex',
-      alignItems: 'center',
-      gap: theme.spacing(1),
-      '& .location': {},
-      '& .digest': {
-        flex: 1,
-        color: theme.palette.text.secondary,
-      },
-    }}>
-      <Box className="location">{ ARTIFACT_LOGO[location] }</Box>
-      <Typography className="digest">{ digest }</Typography>
-    </Box>
-  )
-}
-
-Artifact.propTypes = {
-  location: PropTypes.string.isRequired,
-  digest: PropTypes.string.isRequired,
-}
+import { Artifact } from './artifact'
 
 //
 
@@ -58,7 +22,7 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
   const theme = useTheme()
 
   return (
-    <Box>
+    <Fragment>
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
@@ -77,25 +41,35 @@ const TagDetails = ({ tag_name, github_commit_hash, artifacts }) => {
         <GitHubIcon
           sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
-        {
-          github_commit_hash
-            ? (
-              <Link
-                href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
-                className="hash"
-                target="_blank"
-                rel="noopener noreferrer"
-              >{ github_commit_hash }</Link>
-            ) : <Typography className="hash">hash unknown</Typography>
-        }
+        <Stack>
+          <Link 
+            href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag_name }` }
+            target="_blank"
+            rel="noopener noreferrer"
+          >{ tag_name }</Link>
+
+          {
+            github_commit_hash
+              ? (
+                <Link
+                  href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
+                  className="hash"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{ github_commit_hash }</Link>
+              ) : <Typography className="hash">hash unknown</Typography>
+          }
+        </Stack>
       </Box>
+
       <Typography sx={{ color: 'text.primary' }} variant="h6">Artifacts</Typography>
+      
       {
         Object.keys(artifacts).length
           ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ artifacts[key] }` } location={ key } { ...artifacts[key] } />)
-          : <Typography sx={{ color: 'text.secondary' }}>None</Typography>
+          : <Typography sx={{ color: 'text.secondary', fontStyle: 'italic' }}>None</Typography>
       }
-    </Box>
+    </Fragment>
   )
 }
 
@@ -231,13 +205,6 @@ export const ProjectDrawer = ({ open }) => {
                   <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
                     { tag.tag_name }
                   </Typography>
-                  <IconButton link
-                    size="small"
-                    href={ `https://github.com/helxplatform/tycho/releases/tag/${ tag.tag_name }` }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{ color: 'text.secondary' }}
-                  ><LinkIcon sx={{ fontSize: 16 }} /></IconButton>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
                   <TagDetails { ...tag } />

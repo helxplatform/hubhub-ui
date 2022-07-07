@@ -5,7 +5,7 @@ import { AppBar, Box, Switch, Toolbar, useTheme } from '@mui/material'
 import helxLogoLight from '../../images/helx-logo-light.png'
 import helxLogoDark from '../../images/helx-logo-dark.png'
 import { useApp } from '../../context'
-import { ProjectDrawer } from '../project-drawer'
+import { ProjectDrawer } from '../drawer'
 import './layout.scss'
 
 const LOGOS = {
