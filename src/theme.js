@@ -44,6 +44,9 @@ export const lightTheme = {
       primary: '#333',
       secondary: '#666',
     },
+    success: {
+      main: '#368b77',
+    },
   },
   typography,
   shape,

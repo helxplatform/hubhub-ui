@@ -11,8 +11,7 @@ import {
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
   GitHub as GitHubIcon,
-  Star as ConnectedIcon,
-  Circle as DisconnectedIcon,
+  Circle as ConnectedIcon,
 } from '@mui/icons-material'
 import { useApp } from '../../context'
 
@@ -163,6 +162,7 @@ export const ProjectDrawer = ({ open }) => {
               <Box sx={{
                 fontSize: '85%',
                 filter: `opacity(${ hideDisconnectedTags ? '1.0' : '0.25' })`,
+                color: theme.palette.success.main,
               }}
               >Connected</Box>
               <Box sx={{
@@ -173,7 +173,7 @@ export const ProjectDrawer = ({ open }) => {
             </Box>
             <Switch
               onChange={ event => setHideDisconnectedTags(event.target.checked) }
-              color="secondary"
+              color="primary"
               size="small"
               checked={ hideDisconnectedTags }
               sx={{ transform: 'rotate(-90deg)' }}
@@ -252,11 +252,7 @@ export const ProjectDrawer = ({ open }) => {
                     { tag.tag_name }
                   </Typography>
                   <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
-                    {
-                      tag.is_connected
-                        ? <ConnectedIcon color="primary" />
-                        : <DisconnectedIcon color="secondary" sx={{ filter: 'opacity(0.1)' }} />
-                    }
+                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } />
                   </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
