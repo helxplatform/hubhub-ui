@@ -24,7 +24,7 @@ export const ProjectsView = () => {
       flex: 1,
     },
     {
-      field: 'latest-tag',
+      field: 'latestTag',
       headerName: 'Latest Tag',
       width: 200,
     },
@@ -50,7 +50,7 @@ export const ProjectsView = () => {
       )
       .map(key => ({
         id: projects[key].repository_name,
-        tags: Object.keys(projects[key].tags)[0],
+        latestTag: Object.keys(projects[key].tags)[0],
       }))
     : [], [onlyConnected, projects])
 
