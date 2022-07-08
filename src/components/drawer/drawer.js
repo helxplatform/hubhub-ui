@@ -193,6 +193,31 @@ export const ProjectDrawer = ({ open }) => {
           padding: 0,
           overflow: 'auto',
         },
+        '& .MuiAccordion-root': {
+          '& .accordion-title': {
+            color: theme.palette.text.secondary,
+            transition: 'color 150ms',
+          },
+          '& .connected-icon': {
+            filter: 'opacity(0.5)',
+            transition: 'filter 250ms',
+          },
+          '& .expand-icon': {
+            filter: 'opacity(0.5)',
+            transition: 'filter 250ms',
+          },
+          '&:hover': {
+            '.accordion-title': {
+              color: theme.palette.text.primary,
+            },
+            '& .connected-icon': {
+              filter: 'opacity(1.0)',
+            },
+            '& .expand-icon': {
+              filter: 'opacity(1.0)',
+            },
+          },
+        },
         '& .MuiAccordionSummary-content': {
           display: 'flex',
           gap: '1rem',
@@ -212,17 +237,18 @@ export const ProjectDrawer = ({ open }) => {
                 elevation={ 0 }
                 defaultExpanded={ i === 0 }
                 expanded={ expandedPanels.has(i) }
+                TransitionProps={{ unmountOnExit: true }}
               >
                 <AccordionSummary
-                  expandIcon={ <ExpandIcon color="secondary" /> }
+                  expandIcon={ <ExpandIcon color="secondary" className="expand-icon" /> }
                   aria-controls={ `${ tag.tag_name }-content` }
                   id={ `${ tag.tag_name }-header` }
                 >
-                  <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
+                  <Typography variant="h5" className="accordion-title">
                     { tag.tag_name }
                   </Typography>
                   <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
-                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" />
+                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" className="connected-icon" />
                   </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
