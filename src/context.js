@@ -22,7 +22,6 @@ const fetchProjects = async () => {
 }
 
 export const AppContextProvider = ({ children }) => {
-  // const [projects, setProjects] = useState([])
   const [currentProjectID, setCurrentProjectID] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const smallScreen = useMediaQuery(`(max-width: 600px)`)
