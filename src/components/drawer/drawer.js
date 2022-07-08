@@ -85,7 +85,7 @@ TagDetails.propTypes = {
 
 export const ProjectDrawer = ({ open }) => {
   const theme = useTheme()
-  const { projects, closeDrawer, currentProjectID, onlyConnected, smallScreen } = useApp()
+  const { projects, closeDrawer, currentProjectID, debugMode, onlyConnected, smallScreen } = useApp()
   const [expandedPanels, setExpandedPanels] = useState(new Set([0]))
 
   const project = useMemo(() => projects[currentProjectID], [currentProjectID])
@@ -134,6 +134,7 @@ export const ProjectDrawer = ({ open }) => {
         <Stack
           direction="row"
           alignItems="stretch"
+          divider={ <Divider orientation="vertical" /> }
           sx={{ height: '100%', width: '100%' }}
         >
           <IconButton
@@ -143,14 +144,16 @@ export const ProjectDrawer = ({ open }) => {
           >
             <CloseIcon />
           </IconButton>
-
-          <Divider orientation="vertical" />
           
-          <Typography variant="h3" sx={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 1rem', color: theme.palette.text.primary }}>
+          <Typography variant="h3" sx={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 1rem',
+            color: theme.palette.text.primary,
+          }}>
             { project?.repository_name || '...' }
           </Typography>
-          
-          <Divider orientation="vertical" />
           
           <IconButton
             onClick={ handleClickCollapseAll }
@@ -161,8 +164,6 @@ export const ProjectDrawer = ({ open }) => {
             <CollapseAllIcon />
           </IconButton>
           
-          <Divider orientation="vertical" />
-          
           <IconButton
             onClick={ handleClickExpandAll }
             disabled={ project && expandedPanels.size === Object.keys(project.tags).length }
@@ -171,10 +172,11 @@ export const ProjectDrawer = ({ open }) => {
           >
             <ExpandAllIcon />
           </IconButton>
+
         </Stack>
       </Toolbar>
     )
-  }, [onlyConnected, expandedPanels, project])
+  }, [expandedPanels, project, onlyConnected])
 
   return (
     <Drawer
@@ -190,8 +192,34 @@ export const ProjectDrawer = ({ open }) => {
           zIndex: 9,
         },
         '& .drawer-content': {
-          padding: 0,
+          padding: '0 !important',
           overflow: 'auto',
+          flex: 1,
+        },
+        '& .MuiAccordion-root': {
+          '& .accordion-title': {
+            color: theme.palette.text.secondary,
+            transition: 'color 150ms',
+          },
+          '& .connected-icon': {
+            filter: 'opacity(0.5)',
+            transition: 'filter 250ms',
+          },
+          '& .expand-icon': {
+            filter: 'opacity(0.5)',
+            transition: 'filter 250ms',
+          },
+          '&:hover': {
+            '.accordion-title': {
+              color: theme.palette.text.primary,
+            },
+            '& .connected-icon': {
+              filter: 'opacity(1.0)',
+            },
+            '& .expand-icon': {
+              filter: 'opacity(1.0)',
+            },
+          },
         },
         '& .MuiAccordionSummary-content': {
           display: 'flex',
@@ -203,34 +231,54 @@ export const ProjectDrawer = ({ open }) => {
       <DrawerHeader />
       <CardContent className="drawer-content">
         {
-          project ? Object.keys(visibleTags).map((key, i) => {
-            const tag = project.tags[key]
-            return (
-              <Accordion
-                onChange={ () => handleClickPanel(i) }
-                key={ `${ project.repository_name }-${ tag.tag_name }` }
-                elevation={ 0 }
-                defaultExpanded={ i === 0 }
-                expanded={ expandedPanels.has(i) }
-              >
-                <AccordionSummary
-                  expandIcon={ <ExpandIcon color="secondary" /> }
-                  aria-controls={ `${ tag.tag_name }-content` }
-                  id={ `${ tag.tag_name }-header` }
+          debugMode ? (
+            <pre style={{
+              backgroundColor: `#0001`,
+              color: theme.palette.text.primary,
+              padding: theme.spacing(1),
+              margin: 0,
+            }}>
+              { JSON.stringify(Object.keys(visibleTags).reduce((acc, key) => [...acc, project.tags[key]], []), null, 2) }
+            </pre>
+          ) : Object.keys(visibleTags).length > 0
+            ? Object.keys(visibleTags).map((key, i) => {
+              const tag = project.tags[key]
+              return (
+                <Accordion
+                  onChange={ () => handleClickPanel(i) }
+                  key={ `${ project.repository_name }-${ tag.tag_name }` }
+                  elevation={ 0 }
+                  defaultExpanded={ i === 0 }
+                  expanded={ expandedPanels.has(i) }
+                  TransitionProps={{ unmountOnExit: true }}
                 >
-                  <Typography variant="h5" sx={{ color: theme.palette.text.secondary }}>
-                    { tag.tag_name }
-                  </Typography>
-                  <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
-                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" />
-                  </Tooltip>
-                </AccordionSummary>
-                <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                  <TagDetails repo={ project.repository_name } { ...tag } />
-                </AccordionDetails>
-              </Accordion>
+                  <AccordionSummary
+                    expandIcon={ <ExpandIcon color="secondary" className="expand-icon" /> }
+                    aria-controls={ `${ tag.tag_name }-content` }
+                    id={ `${ tag.tag_name }-header` }
+                  >
+                    <Typography variant="h5" className="accordion-title">
+                      { tag.tag_name }
+                    </Typography>
+                    <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
+                      <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" className="connected-icon" />
+                    </Tooltip>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
+                    <TagDetails repo={ project.repository_name } { ...tag } />
+                  </AccordionDetails>
+                </Accordion>
+              )
+            }) : (
+              <Box sx={{
+                height: '33%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}>
+                <Typography variant="h2" color="text.secondary">Nothing to see here!</Typography>
+              </Box>
             )
-          }) : <div>no project found</div>
         }
       </CardContent>
     </Drawer>

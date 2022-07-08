@@ -27,6 +27,7 @@ export const AppContextProvider = ({ children }) => {
   const smallScreen = useMediaQuery(`(max-width: 600px)`)
   const [colorMode, setColorMode] = useLocalStorage('colorMode', MODES.light)
   const [onlyConnected, setOnlyConnected] = useLocalStorage('onlyConnected', true)
+  const [debugMode, setDebugMode] = useState(false)
 
   const theme = useMemo(() => createTheme({
     ...(colorMode === MODES.light ? lightTheme : darkTheme),
@@ -52,6 +53,8 @@ export const AppContextProvider = ({ children }) => {
     setColorMode(MODES.light)
   }, [colorMode])
 
+  const toggleDebugMode = () => setDebugMode(!debugMode)
+
   return (
     <AppContext.Provider value={{
       currentProjectID, setCurrentProjectID,
@@ -60,6 +63,7 @@ export const AppContextProvider = ({ children }) => {
       smallScreen,
       MODES, colorMode, setColorMode, toggleColorMode,
       onlyConnected, setOnlyConnected, refetch,
+      debugMode, toggleDebugMode,
     }}>
       <ThemeProvider theme={ theme }>
         { children }

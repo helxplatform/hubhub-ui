@@ -11,6 +11,7 @@ import {
   Brightness7 as LightModeIcon,
   Brightness4 as DarkModeIcon,
   Refresh as RefreshIcon,
+  BugReport as DebugIcon,
 } from '@mui/icons-material'
 
 const LOGOS = {
@@ -20,7 +21,7 @@ const LOGOS = {
 
 export const Layout = ({ children }) => {
   const theme = useTheme()
-  const { drawerOpen, colorMode, MODES, onlyConnected, setOnlyConnected, toggleColorMode, refetch } = useApp()
+  const { drawerOpen, colorMode, MODES, debugMode, toggleDebugMode, onlyConnected, setOnlyConnected, toggleColorMode, refetch } = useApp()
 
   const handleClickReSync = () => {
     refetch()
@@ -69,17 +70,30 @@ export const Layout = ({ children }) => {
           <Link to="/"><img src={ LOGOS[colorMode] } height="100%" alt="" /></Link>
           <Stack
             direction="row"
-            spacing={ 1 }
             divider={ <Divider orientation="vertical" flexItem /> }
-            sx={{ marginRight: theme.spacing(1), height: '100%' }}
+            sx={{ height: '100%', }}
           >
-            <Stack justifyContent="center">
-              <Tooltip placement="bottom" title="Re-sync project data">
-                <IconButton onClick={ handleClickReSync }>
-                  <RefreshIcon color="primary" />
-                </IconButton>
-              </Tooltip>
-            </Stack>
+            {/* this <span /> gets Stack to create a leading divider. */}
+            <span />
+
+            <Tooltip placement="bottom" title="Re-sync project data">
+              <IconButton
+                onClick={ handleClickReSync }
+                color="inherit"
+                sx={{ borderRadius: 0, height: '100%', width: '48px' }}
+              >
+                <RefreshIcon color="secondary" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip placement="bottom" title={ `${ debugMode ? 'Leave' : 'Enter' } debug mode` }>
+              <IconButton
+                onClick={ toggleDebugMode }
+                sx={{ borderRadius: 0, height: '100%', width: '48px' }}
+              >
+                <DebugIcon sx={{ color: debugMode ? theme.palette.secondary.light : theme.palette.secondary.dark }} />
+              </IconButton>
+            </Tooltip>
 
             <Tooltip
               placement="bottom"
@@ -100,13 +114,15 @@ export const Layout = ({ children }) => {
               </Box>
             </Tooltip>
             
-            <Stack justifyContent="center">
-              <Tooltip placement="bottom" title={ `Switch to ${colorMode === MODES.dark ? 'light' : 'dark' } mode` }>
-                <IconButton onClick={ toggleColorMode } color="inherit">
-                  { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
-                </IconButton>
-              </Tooltip>
-            </Stack>
+            <Tooltip placement="bottom" title={ `Switch to ${colorMode === MODES.dark ? 'light' : 'dark' } mode` }>
+              <IconButton
+                onClick={ toggleColorMode }
+                color="inherit"
+                sx={{ borderRadius: 0, height: '100%', width: '48px' }}
+              >
+                { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Toolbar>
       </AppBar>
