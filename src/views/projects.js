@@ -5,10 +5,9 @@ import { useApp } from '../context'
 
 export const ProjectsView = () => {
   const theme = useTheme()
-  const { isLoading, onlyConnected, projects, setCurrentProjectID } = useApp()
+  const { isLoading, isError, onlyConnected, projects, setCurrentProjectID } = useApp()
 
   const countTags = (params, connected) => {
-
     if (connected) {
       return Object.keys(projects[params.row.id].tags)
         .filter(tag => projects[params.row.id].tags[tag].is_connected)
@@ -29,13 +28,13 @@ export const ProjectsView = () => {
       width: 200,
     },
     {
-      field: 'all-tags',
+      field: 'tag-count',
       headerName: '# Tags',
       width: 125,
       valueGetter: params => countTags(params),
     },
     {
-      field: 'connected-tags',
+      field: 'connections',
       headerName: '# Connections',
       width: 175,
       valueGetter: params => countTags(params, true),
@@ -89,6 +88,7 @@ export const ProjectsView = () => {
         autoPageSize
         disableColumnSelector
         loading={ isLoading }
+        error={ isError || null }
         components={{
           LoadingOverlay: LinearProgress,
           Toolbar: GridToolbar,

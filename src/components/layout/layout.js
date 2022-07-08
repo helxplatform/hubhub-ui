@@ -10,6 +10,7 @@ import './layout.scss'
 import {
   Brightness7 as LightModeIcon,
   Brightness4 as DarkModeIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material'
 
 const LOGOS = {
@@ -50,6 +51,15 @@ export const Layout = ({ children }) => {
           <Link to="/"><img src={ LOGOS[colorMode] } height="100%" alt="" /></Link>
           <Stack direction="row" spacing={ 1 } sx={{ marginRight: theme.spacing(2), height: '100%' }} alignItems="stretch">
             <Divider orientation="vertical" flexItem />
+
+            <Stack justifyContent="center">
+              <IconButton onClick={ handleClickRefresh }>
+                <RefreshIcon color="primary" />
+              </IconButton>
+            </Stack>
+
+            <Divider orientation="vertical" flexItem />
+
             <Box sx={{
               display: 'flex',
               alignItems: 'center',
@@ -84,7 +94,6 @@ export const Layout = ({ children }) => {
                 { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
               </IconButton>
             </Stack>
-
           </Stack>
         </Toolbar>
       </AppBar>
