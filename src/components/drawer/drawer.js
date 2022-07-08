@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Link, Stack, Switch, Toolbar, Tooltip, Typography, useTheme, 
+  Link, Stack, Toolbar, Tooltip, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
@@ -28,7 +28,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         display: 'flex',
         alignItems: 'center',
         gap: theme.spacing(1),
-        margin: `${ theme.spacing(1) } 0`,
+        margin: `${ theme.spacing(2) } 0`,
         '& a': {
           textDecoration: 'underline',
           fontSize: '80%',
@@ -42,7 +42,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         <GitHubIcon
           sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
-        <Stack>
+        <Stack spacing={ 0.5 }>
           <Link 
             href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
             target="_blank"
@@ -53,7 +53,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
             github_commit_hash
               ? (
                 <Link
-                  href={ `https://github.com/helxplatform/tycho/commit/${ github_commit_hash }` }
+                  href={ `https://github.com/helxplatform/${ repo }/commit/${ github_commit_hash }` }
                   className="hash"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -63,7 +63,7 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         </Stack>
       </Box>
 
-      <Typography sx={{ color: 'text.primary' }} variant="h6">Artifacts</Typography>
+      <Divider>Artifacts</Divider>
       
       {
         Object.keys(artifacts).length
@@ -85,15 +85,14 @@ TagDetails.propTypes = {
 
 export const ProjectDrawer = ({ open }) => {
   const theme = useTheme()
-  const { projects, closeDrawer, currentProjectID, smallScreen } = useApp()
+  const { projects, closeDrawer, currentProjectID, onlyConnected, smallScreen } = useApp()
   const [expandedPanels, setExpandedPanels] = useState(new Set([0]))
-  const [hideDisconnectedTags, setHideDisconnectedTags] = useState(true)
 
   const project = useMemo(() => projects[currentProjectID], [currentProjectID])
 
   const visibleTags = useMemo(() => {
     if (!project) { return {} }
-    if (hideDisconnectedTags) {
+    if (onlyConnected) {
       return Object.keys(project.tags)
         .reduce((acc, key) => {
           if (project.tags[key].is_connected) {
@@ -103,7 +102,7 @@ export const ProjectDrawer = ({ open }) => {
         }, {})
     }
     return { ...project.tags }
-  }, [hideDisconnectedTags, project])
+  }, [onlyConnected, project])
 
   useEffect(() => {
     setExpandedPanels(new Set([0]))
@@ -153,35 +152,6 @@ export const ProjectDrawer = ({ open }) => {
           
           <Divider orientation="vertical" />
           
-          <Box sx={{
-            display: 'flex',
-            alignItems: 'center',
-            paddingLeft: theme.spacing(2),
-          }}>
-            <Box sx={{ textAlign: 'right' }}>
-              <Box sx={{
-                fontSize: '85%',
-                filter: `opacity(${ hideDisconnectedTags ? '1.0' : '0.25' })`,
-                color: theme.palette.success.main,
-              }}
-              >Connected</Box>
-              <Box sx={{
-                fontSize: '85%',
-                filter: `opacity(${ hideDisconnectedTags ? '0.25' : '1.0' })`,
-              }}
-              >All</Box>
-            </Box>
-            <Switch
-              onChange={ event => setHideDisconnectedTags(event.target.checked) }
-              color="primary"
-              size="small"
-              checked={ hideDisconnectedTags }
-              sx={{ transform: 'rotate(-90deg)' }}
-            />
-          </Box>
-          
-          <Divider orientation="vertical" />
-          
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
@@ -204,7 +174,7 @@ export const ProjectDrawer = ({ open }) => {
         </Stack>
       </Toolbar>
     )
-  }, [hideDisconnectedTags, expandedPanels, project])
+  }, [onlyConnected, expandedPanels, project])
 
   return (
     <Drawer
@@ -252,7 +222,7 @@ export const ProjectDrawer = ({ open }) => {
                     { tag.tag_name }
                   </Typography>
                   <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
-                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } />
+                    <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" />
                   </Tooltip>
                 </AccordionSummary>
                 <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>

@@ -3,30 +3,55 @@ import { Box, LinearProgress, useTheme } from '@mui/material'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { useApp } from '../context'
 
-const columns = [
-  {
-    field: 'id',
-    headerName: 'Repository',
-    flex: 1,
-  },
-  {
-    field: 'tags',
-    headerName: 'Latest Tag',
-    width: 300,
-  },
-]
-
 export const ProjectsView = () => {
   const theme = useTheme()
-  const { projects, setCurrentProjectID, isLoading } = useApp()
+  const { isLoading, isError, onlyConnected, projects, setCurrentProjectID } = useApp()
+
+  const countTags = (params, connected) => {
+    if (connected) {
+      return Object.keys(projects[params.row.id].tags)
+        .filter(tag => projects[params.row.id].tags[tag].is_connected)
+        .length
+    }
+    return Object.keys(projects[params.row.id].tags).length
+  }
+
+  const columns = useMemo(() => [
+    {
+      field: 'id',
+      headerName: 'Repository',
+      flex: 1,
+    },
+    {
+      field: 'latestTag',
+      headerName: 'Latest Tag',
+      width: 200,
+    },
+    {
+      field: 'tag-count',
+      headerName: '# Tags',
+      width: 125,
+      valueGetter: params => countTags(params),
+    },
+    {
+      field: 'connections',
+      headerName: '# Connections',
+      width: 175,
+      valueGetter: params => countTags(params, true),
+    },
+  ], [projects])
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)
+      .filter(key => onlyConnected
+        ? Object.keys(projects[key].tags).some(tag => Object.keys(projects[key].tags) && projects[key].tags[tag].is_connected)
+        : key
+      )
       .map(key => ({
         id: projects[key].repository_name,
-        tags: Object.keys(projects[key].tags)[0],
+        latestTag: Object.keys(projects[key].tags)[0],
       }))
-    : [], [projects])
+    : [], [onlyConnected, projects])
 
   const handleClickRow = data => {
     setCurrentProjectID(data.id)
@@ -63,6 +88,7 @@ export const ProjectsView = () => {
         autoPageSize
         disableColumnSelector
         loading={ isLoading }
+        error={ isError || null }
         components={{
           LoadingOverlay: LinearProgress,
           Toolbar: GridToolbar,
