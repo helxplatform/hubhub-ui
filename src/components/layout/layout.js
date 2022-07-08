@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { AppBar, Box, Divider, IconButton, Stack, Switch, Toolbar, useTheme } from '@mui/material'
+import { AppBar, Box, Divider, IconButton, Stack, Switch, Tooltip, Toolbar, useTheme } from '@mui/material'
 import helxLogoLight from '../../images/helx-logo-light.png'
 import helxLogoDark from '../../images/helx-logo-dark.png'
 import { useApp } from '../../context'
@@ -20,10 +20,10 @@ const LOGOS = {
 
 export const Layout = ({ children }) => {
   const theme = useTheme()
-  const { drawerOpen, colorMode, MODES, onlyConnected, setOnlyConnected, toggleColorMode, refresh } = useApp()
+  const { drawerOpen, colorMode, MODES, onlyConnected, setOnlyConnected, toggleColorMode, refetch } = useApp()
 
-  const handleClickRefresh = () => {
-    refresh()
+  const handleClickReSync = () => {
+    refetch()
   }
 
   return (
@@ -47,52 +47,65 @@ export const Layout = ({ children }) => {
             height: '100%',
             padding: '16px',
           },
+          '& .data-toggler': {
+            display: 'flex',
+            alignItems: 'center',
+          },
+          '& .label': {
+            fontSize: '85%',
+            '&.connected': {
+              filter: `opacity(${ onlyConnected ? '1.0' : '0.25' })`,
+              color: theme.palette.success.main,
+            },
+            '&.all': {
+              filter: `opacity(${ onlyConnected ? '0.25' : '1.0' })`,
+              color: theme.palette.text.secondary,
+            },
+          },
+          '& .switch': {
+            transform: 'rotate(-90deg)',
+          }
         }}>
           <Link to="/"><img src={ LOGOS[colorMode] } height="100%" alt="" /></Link>
-          <Stack direction="row" spacing={ 1 } sx={{ marginRight: theme.spacing(2), height: '100%' }} alignItems="stretch">
-            <Divider orientation="vertical" flexItem />
-
+          <Stack
+            direction="row"
+            spacing={ 1 }
+            divider={ <Divider orientation="vertical" flexItem /> }
+            sx={{ marginRight: theme.spacing(1), height: '100%' }}
+          >
             <Stack justifyContent="center">
-              <IconButton onClick={ handleClickRefresh }>
-                <RefreshIcon color="primary" />
-              </IconButton>
+              <Tooltip placement="bottom" title="Re-sync project data">
+                <IconButton onClick={ handleClickReSync }>
+                  <RefreshIcon color="primary" />
+                </IconButton>
+              </Tooltip>
             </Stack>
 
-            <Divider orientation="vertical" flexItem />
-
-            <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}>
-              <Box sx={{ textAlign: 'right', marginLeft: theme.spacing(1) }}>
-                <Box sx={{
-                  fontSize: '85%',
-                  filter: `opacity(${ onlyConnected ? '1.0' : '0.25' })`,
-                  color: theme.palette.success.main,
-                }}
-                >Connected</Box>
-                <Box sx={{
-                  fontSize: '85%',
-                  filter: `opacity(${ onlyConnected ? '0.25' : '1.0' })`,
-                  color: theme.palette.text.secondary,
-                }}
-                >All</Box>
+            <Tooltip
+              placement="bottom"
+              title={ onlyConnected ? 'Show all projects' : `Show only projects with connected artifacts` }
+            >
+              <Box className="data-toggler">
+                <Box sx={{ textAlign: 'right', marginLeft: theme.spacing(1) }}>
+                  <Box className="connected label">Connected</Box>
+                  <Box className="all label">All</Box>
+                </Box>
+                <Switch
+                  onChange={ event => setOnlyConnected(event.target.checked) }
+                  color="primary"
+                  size="small"
+                  checked={ onlyConnected }
+                  className="switch"
+                />
               </Box>
-              <Switch
-                onChange={ event => setOnlyConnected(event.target.checked) }
-                color="primary"
-                size="small"
-                checked={ onlyConnected }
-                sx={{ transform: 'rotate(-90deg)' }}
-              />
-            </Box>
-            
-            <Divider orientation="vertical" flexItem />
+            </Tooltip>
             
             <Stack justifyContent="center">
-              <IconButton sx={{ ml: 1 }} onClick={ toggleColorMode } color="inherit">
-                { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
-              </IconButton>
+              <Tooltip placement="bottom" title={ `Switch to ${colorMode === MODES.dark ? 'light' : 'dark' } mode` }>
+                <IconButton onClick={ toggleColorMode } color="inherit">
+                  { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
+                </IconButton>
+              </Tooltip>
             </Stack>
           </Stack>
         </Toolbar>

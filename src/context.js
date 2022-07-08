@@ -32,7 +32,7 @@ export const AppContextProvider = ({ children }) => {
     ...(colorMode === MODES.light ? lightTheme : darkTheme),
   }), [colorMode])
 
-  const { data, isLoading, isError } = useQuery('projects', fetchProjects)
+  const { data, isLoading, isError, refetch } = useQuery('projects', fetchProjects)
 
   const projects = useMemo(() => data ? data.projects : [], [data])
 
@@ -52,10 +52,6 @@ export const AppContextProvider = ({ children }) => {
     setColorMode(MODES.light)
   }, [colorMode])
 
-  const refresh = () => {
-    console.log('refresh data')
-  }
-
   return (
     <AppContext.Provider value={{
       currentProjectID, setCurrentProjectID,
@@ -63,7 +59,7 @@ export const AppContextProvider = ({ children }) => {
       projects, isLoading, isError,
       smallScreen,
       MODES, colorMode, setColorMode, toggleColorMode,
-      onlyConnected, setOnlyConnected, refresh,
+      onlyConnected, setOnlyConnected, refetch,
     }}>
       <ThemeProvider theme={ theme }>
         { children }
