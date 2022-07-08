@@ -50,6 +50,10 @@ export const AppContextProvider = ({ children }) => {
     setColorMode(MODES.light)
   }, [colorMode])
 
+  const refresh = () => {
+    useQuery('projects')
+  }
+
   return (
     <AppContext.Provider value={{
       currentProjectID, setCurrentProjectID,
@@ -57,7 +61,7 @@ export const AppContextProvider = ({ children }) => {
       projects, isLoading,
       smallScreen,
       MODES, colorMode, setColorMode, toggleColorMode,
-      onlyConnected, setOnlyConnected,
+      onlyConnected, setOnlyConnected, refresh,
     }}>
       <ThemeProvider theme={ theme }>
         { children }

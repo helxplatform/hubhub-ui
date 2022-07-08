@@ -19,7 +19,11 @@ const LOGOS = {
 
 export const Layout = ({ children }) => {
   const theme = useTheme()
-  const { drawerOpen, colorMode, MODES, onlyConnected, setOnlyConnected, toggleColorMode } = useApp()
+  const { drawerOpen, colorMode, MODES, onlyConnected, setOnlyConnected, toggleColorMode, refresh } = useApp()
+
+  const handleClickRefresh = () => {
+    refresh()
+  }
 
   return (
     <Fragment>
@@ -44,12 +48,13 @@ export const Layout = ({ children }) => {
           },
         }}>
           <Link to="/"><img src={ LOGOS[colorMode] } height="100%" alt="" /></Link>
-          <Stack direction="row" sx={{ padding: `0 ${ theme.spacing(2) }` }}>
+          <Stack direction="row" spacing={ 1 } sx={{ marginRight: theme.spacing(2), height: '100%' }} alignItems="stretch">
+            <Divider orientation="vertical" flexItem />
             <Box sx={{
               display: 'flex',
               alignItems: 'center',
             }}>
-              <Box sx={{ textAlign: 'right' }}>
+              <Box sx={{ textAlign: 'right', marginLeft: theme.spacing(1) }}>
                 <Box sx={{
                   fontSize: '85%',
                   filter: `opacity(${ onlyConnected ? '1.0' : '0.25' })`,
@@ -72,11 +77,13 @@ export const Layout = ({ children }) => {
               />
             </Box>
             
-            <Divider orientation="vertical" />
+            <Divider orientation="vertical" flexItem />
             
-            <IconButton sx={{ ml: 1 }} onClick={ toggleColorMode } color="inherit">
-              { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
-            </IconButton>
+            <Stack justifyContent="center">
+              <IconButton sx={{ ml: 1 }} onClick={ toggleColorMode } color="inherit">
+                { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
+              </IconButton>
+            </Stack>
 
           </Stack>
         </Toolbar>
