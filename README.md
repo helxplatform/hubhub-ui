@@ -14,4 +14,4 @@ To build an easily debuggable production build, use `npm run build-dev`.
 
 ### GitHub Pages Deployment
 
-As development ramps up, quick deployments to GitHub Pages ([helxplatform.github.io/hubhub-ui/](https://helxplatform.github.io/hubhub-ui/)) by building the application bundle pushing to the `gh-pages` branch. A single script handles this: `npm run deploy`.
+As development ramps up, quick deployments to GitHub Pages ([helxplatform.github.io/hubhub-ui/](https://helxplatform.github.io/hubhub-ui/)) is easy by building the application bundle pushing to the `gh-pages` branch. A single script handles this process: simply execute `npm run deploy`.
