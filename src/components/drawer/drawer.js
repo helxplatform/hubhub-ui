@@ -194,6 +194,7 @@ export const ProjectDrawer = ({ open }) => {
         '& .drawer-content': {
           padding: '0 !important',
           overflow: 'auto',
+          flex: 1,
         },
         '& .MuiAccordion-root': {
           '& .accordion-title': {
@@ -228,9 +229,9 @@ export const ProjectDrawer = ({ open }) => {
       } }}
     >
       <DrawerHeader />
-      {
-        debugMode ? (
-          <CardContent className="drawer-content">
+      <CardContent className="drawer-content">
+        {
+          debugMode ? (
             <pre style={{
               backgroundColor: `#0001`,
               color: theme.palette.text.primary,
@@ -239,43 +240,47 @@ export const ProjectDrawer = ({ open }) => {
             }}>
               { JSON.stringify(Object.keys(visibleTags).reduce((acc, key) => [...acc, project.tags[key]], []), null, 2) }
             </pre>
-          </CardContent>
-        ) : (
-          <CardContent className="drawer-content">
-            {
-              Object.keys(visibleTags).map((key, i) => {
-                const tag = project.tags[key]
-                return (
-                  <Accordion
-                    onChange={ () => handleClickPanel(i) }
-                    key={ `${ project.repository_name }-${ tag.tag_name }` }
-                    elevation={ 0 }
-                    defaultExpanded={ i === 0 }
-                    expanded={ expandedPanels.has(i) }
-                    TransitionProps={{ unmountOnExit: true }}
+          ) : Object.keys(visibleTags).length > 0
+            ? Object.keys(visibleTags).map((key, i) => {
+              const tag = project.tags[key]
+              return (
+                <Accordion
+                  onChange={ () => handleClickPanel(i) }
+                  key={ `${ project.repository_name }-${ tag.tag_name }` }
+                  elevation={ 0 }
+                  defaultExpanded={ i === 0 }
+                  expanded={ expandedPanels.has(i) }
+                  TransitionProps={{ unmountOnExit: true }}
+                >
+                  <AccordionSummary
+                    expandIcon={ <ExpandIcon color="secondary" className="expand-icon" /> }
+                    aria-controls={ `${ tag.tag_name }-content` }
+                    id={ `${ tag.tag_name }-header` }
                   >
-                    <AccordionSummary
-                      expandIcon={ <ExpandIcon color="secondary" className="expand-icon" /> }
-                      aria-controls={ `${ tag.tag_name }-content` }
-                      id={ `${ tag.tag_name }-header` }
-                    >
-                      <Typography variant="h5" className="accordion-title">
-                        { tag.tag_name }
-                      </Typography>
-                      <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
-                        <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" className="connected-icon" />
-                      </Tooltip>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                      <TagDetails repo={ project.repository_name } { ...tag } />
-                    </AccordionDetails>
-                  </Accordion>
-                )
-              })
-            }
-          </CardContent>
-        )
-      }
+                    <Typography variant="h5" className="accordion-title">
+                      { tag.tag_name }
+                    </Typography>
+                    <Tooltip placement="right" title={ `${ !tag.is_connected ? 'DIS' : '' }CONNECTED` }>
+                      <ConnectedIcon color={ tag.is_connected ? 'success' : 'disabled' } fontSize="small" className="connected-icon" />
+                    </Tooltip>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
+                    <TagDetails repo={ project.repository_name } { ...tag } />
+                  </AccordionDetails>
+                </Accordion>
+              )
+            }) : (
+              <Box sx={{
+                height: '33%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}>
+                <Typography variant="h2" color="text.secondary">Nothing to see here!</Typography>
+              </Box>
+            )
+        }
+      </CardContent>
     </Drawer>
   )
 }
