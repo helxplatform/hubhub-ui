@@ -243,7 +243,7 @@ export const ProjectDrawer = ({ open }) => {
         ) : (
           <CardContent className="drawer-content">
             {
-              project ? Object.keys(visibleTags).map((key, i) => {
+              Object.keys(visibleTags).map((key, i) => {
                 const tag = project.tags[key]
                 return (
                   <Accordion
@@ -271,7 +271,7 @@ export const ProjectDrawer = ({ open }) => {
                     </AccordionDetails>
                   </Accordion>
                 )
-              }) : <div>no project found</div>
+              })
             }
           </CardContent>
         )
