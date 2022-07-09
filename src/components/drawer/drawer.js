@@ -30,7 +30,7 @@ const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, githu
         gap: theme.spacing(1),
         margin: `${ theme.spacing(2) } 0`,
         '& .link-stack': {
-          fontSize: '80%',
+          fontSize: '90%',
           '& .date': {
             color: theme.palette.text.secondary,
             filter: 'opacity(0.5)',
@@ -40,11 +40,11 @@ const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, githu
           '& .hash': {
             color: theme.palette.text.secondary,
             fontStyle: 'italic',
-            fontSize: '80%',
           }
         },
       }}>
         <GitHubIcon
+          fontSize="large"
           sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
         <Stack spacing={ 0.5 } className="link-stack">
