@@ -257,7 +257,10 @@ export const ProjectDrawer = ({ open }) => {
               padding: theme.spacing(1),
               margin: 0,
             }}>
-              { JSON.stringify(Object.keys(visibleTags).reduce((acc, key) => [...acc, project.tags[key]], []), null, 2) }
+              {
+                JSON.stringify(Object.keys(visibleTags)
+                  .reduce((acc, key) => [...acc, project.tags[key]], []), null, 2)
+              }
             </pre>
           ) : Object.keys(visibleTags).length > 0
             ? Object.keys(visibleTags).map((key, i) => {
