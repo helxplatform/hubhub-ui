@@ -54,7 +54,7 @@ const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, githu
               rel="noopener noreferrer"
             >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
             <span className="date">
-              {' '}&mdash;{' '} { github_tag_date || 'date unknown' }
+              {' '}&mdash;{' '} { new Date(github_tag_date).toDateString() || 'date unknown' }
             </span>
           </span>
 
@@ -69,7 +69,7 @@ const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, githu
                     rel="noopener noreferrer"
                   >{ github_commit_hash }</Link>
                   <span className="date">
-                    {' '}&mdash;{' '} { github_commit_date || 'date unknown' }
+                    {' '}&mdash;{' '} { new Date(github_commit_date).toDateString() || 'date unknown' }
                   </span>
                 </span>
               ) : <Typography className="hash">hash unknown</Typography>
