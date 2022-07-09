@@ -85,14 +85,14 @@ TagDetails.propTypes = {
 
 export const ProjectDrawer = ({ open }) => {
   const theme = useTheme()
-  const { projects, closeDrawer, currentProjectID, debugMode, onlyConnected, smallScreen } = useApp()
+  const { projects, closeDrawer, currentProjectID, settings, smallScreen } = useApp()
   const [expandedPanels, setExpandedPanels] = useState(new Set([0]))
 
   const project = useMemo(() => projects[currentProjectID], [currentProjectID])
 
   const visibleTags = useMemo(() => {
     if (!project) { return {} }
-    if (onlyConnected) {
+    if (settings.onlyConnected) {
       return Object.keys(project.tags)
         .reduce((acc, key) => {
           if (project.tags[key].is_connected) {
@@ -102,7 +102,7 @@ export const ProjectDrawer = ({ open }) => {
         }, {})
     }
     return { ...project.tags }
-  }, [onlyConnected, project])
+  }, [settings.onlyConnected, project])
 
   useEffect(() => {
     setExpandedPanels(new Set([0]))
@@ -176,7 +176,7 @@ export const ProjectDrawer = ({ open }) => {
         </Stack>
       </Toolbar>
     )
-  }, [expandedPanels, project, onlyConnected])
+  }, [expandedPanels, project, settings.onlyConnected])
 
   return (
     <Drawer
@@ -231,7 +231,7 @@ export const ProjectDrawer = ({ open }) => {
       <DrawerHeader />
       <CardContent className="drawer-content">
         {
-          debugMode ? (
+          settings.debugMode ? (
             <pre style={{
               backgroundColor: `#0001`,
               color: theme.palette.text.primary,

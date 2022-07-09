@@ -5,7 +5,7 @@ import { useApp } from '../context'
 
 export const ProjectsView = () => {
   const theme = useTheme()
-  const { isLoading, isError, onlyConnected, projects, setCurrentProjectID } = useApp()
+  const { isLoading, isError, settings, projects, setCurrentProjectID } = useApp()
 
   const countTags = (params, connected) => {
     if (connected) {
@@ -43,7 +43,7 @@ export const ProjectsView = () => {
 
   const tableData = useMemo(() => projects
     ? Object.keys(projects)
-      .filter(key => onlyConnected
+      .filter(key => settings.onlyConnected
         ? Object.keys(projects[key].tags).some(tag => Object.keys(projects[key].tags) && projects[key].tags[tag].is_connected)
         : key
       )
@@ -51,7 +51,7 @@ export const ProjectsView = () => {
         id: projects[key].repository_name,
         latestTag: Object.keys(projects[key].tags)[0],
       }))
-    : [], [onlyConnected, projects])
+    : [], [settings.onlyConnected, projects])
 
   const handleClickRow = data => {
     setCurrentProjectID(data.id)

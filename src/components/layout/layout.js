@@ -21,7 +21,7 @@ const LOGOS = {
 
 export const Layout = ({ children }) => {
   const theme = useTheme()
-  const { drawerOpen, colorMode, MODES, debugMode, toggleDebugMode, onlyConnected, setOnlyConnected, toggleColorMode, refetch } = useApp()
+  const { drawerOpen, refetch, settings } = useApp()
 
   const handleClickReSync = () => {
     refetch()
@@ -55,11 +55,11 @@ export const Layout = ({ children }) => {
           '& .label': {
             fontSize: '85%',
             '&.connected': {
-              filter: `opacity(${ onlyConnected ? '1.0' : '0.25' })`,
+              filter: `opacity(${ settings.onlyConnected ? '1.0' : '0.25' })`,
               color: theme.palette.success.main,
             },
             '&.all': {
-              filter: `opacity(${ onlyConnected ? '0.25' : '1.0' })`,
+              filter: `opacity(${ settings.onlyConnected ? '0.25' : '1.0' })`,
               color: theme.palette.text.secondary,
             },
           },
@@ -67,7 +67,7 @@ export const Layout = ({ children }) => {
             transform: 'rotate(-90deg)',
           }
         }}>
-          <Link to="/"><img src={ LOGOS[colorMode] } height="100%" alt="" /></Link>
+          <Link to="/"><img src={ LOGOS[settings.color.mode] } height="100%" alt="" /></Link>
           <Stack
             direction="row"
             divider={ <Divider orientation="vertical" flexItem /> }
@@ -86,18 +86,18 @@ export const Layout = ({ children }) => {
               </IconButton>
             </Tooltip>
 
-            <Tooltip placement="bottom" title={ `${ debugMode ? 'Leave' : 'Enter' } debug mode` }>
+            <Tooltip placement="bottom" title={ `${ settings.debugMode ? 'Leave' : 'Enter' } debug mode` }>
               <IconButton
-                onClick={ toggleDebugMode }
+                onClick={ settings.toggleDebugMode }
                 sx={{ borderRadius: 0, height: '100%', width: '48px' }}
               >
-                <DebugIcon sx={{ color: debugMode ? theme.palette.secondary.light : theme.palette.secondary.dark }} />
+                <DebugIcon sx={{ color: settings.debugMode ? theme.palette.secondary.light : theme.palette.secondary.dark }} />
               </IconButton>
             </Tooltip>
 
             <Tooltip
               placement="bottom"
-              title={ onlyConnected ? 'Show all projects' : `Show only projects with connected artifacts` }
+              title={ settings.onlyConnected ? 'Show all projects' : `Show only projects with connected artifacts` }
             >
               <Box className="data-toggler">
                 <Box sx={{ textAlign: 'right', marginLeft: theme.spacing(1) }}>
@@ -105,22 +105,22 @@ export const Layout = ({ children }) => {
                   <Box className="all label">All</Box>
                 </Box>
                 <Switch
-                  onChange={ event => setOnlyConnected(event.target.checked) }
+                  onChange={ event => settings.setOnlyConnected(event.target.checked) }
                   color="primary"
                   size="small"
-                  checked={ onlyConnected }
+                  checked={ settings.onlyConnected }
                   className="switch"
                 />
               </Box>
             </Tooltip>
             
-            <Tooltip placement="bottom" title={ `Switch to ${colorMode === MODES.dark ? 'light' : 'dark' } mode` }>
+            <Tooltip placement="bottom" title={ `Switch to ${settings.color.mode === settings.color.modes.dark ? 'light' : 'dark' } mode` }>
               <IconButton
-                onClick={ toggleColorMode }
+                onClick={ settings.color.toggleMode }
                 color="inherit"
                 sx={{ borderRadius: 0, height: '100%', width: '48px' }}
               >
-                { colorMode === MODES.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
+                { settings.color.mode === settings.color.modes.dark ? <DarkModeIcon color="primary" /> : <LightModeIcon color="secondary" /> }
               </IconButton>
             </Tooltip>
           </Stack>

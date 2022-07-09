@@ -61,9 +61,16 @@ export const AppContextProvider = ({ children }) => {
       drawerOpen, closeDrawer,
       projects, isLoading, isError,
       smallScreen,
-      MODES, colorMode, setColorMode, toggleColorMode,
-      onlyConnected, setOnlyConnected, refetch,
-      debugMode, toggleDebugMode,
+      refetch,
+      settings: {
+        color: {
+          modes: MODES,
+          mode: colorMode,
+          toggleMode: toggleColorMode,
+        },
+        onlyConnected, setOnlyConnected,
+        debugMode, toggleDebugMode,
+      },
     }}>
       <ThemeProvider theme={ theme }>
         { children }
