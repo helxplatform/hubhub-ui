@@ -19,7 +19,7 @@ import { Artifact } from './artifact'
 
 //
 
-const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
+const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, github_commit_date, artifacts }) => {
   const theme = useTheme()
 
   return (
@@ -29,35 +29,49 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
         alignItems: 'center',
         gap: theme.spacing(1),
         margin: `${ theme.spacing(2) } 0`,
-        '& a': {
-          textDecoration: 'underline',
+        '& .link-stack': {
           fontSize: '80%',
+          '& .date': {
+            color: theme.palette.text.secondary,
+            filter: 'opacity(0.5)',
+            fontStyle: 'italic',
+          },
+          '& .hash': {
+            color: theme.palette.text.secondary,
+            fontStyle: 'italic',
+            fontSize: '80%',
+          }
         },
-        '& .hash': {
-          color: theme.palette.text.secondary,
-          fontStyle: 'italic',
-          fontSize: '80%',
-        }
       }}>
         <GitHubIcon
           sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
         />
-        <Stack spacing={ 0.5 }>
-          <Link 
-            href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
-            target="_blank"
-            rel="noopener noreferrer"
-          >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
+        <Stack spacing={ 0.5 } className="link-stack">
+          <span>
+            <Link 
+              href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
+              target="_blank"
+              rel="noopener noreferrer"
+            >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
+            <span className="date">
+              {' '}&mdash;{' '} { github_tag_date || 'unknown date' }
+            </span>
+          </span>
 
           {
             github_commit_hash
               ? (
-                <Link
-                  href={ `https://github.com/helxplatform/${ repo }/commit/${ github_commit_hash }` }
-                  className="hash"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >{ github_commit_hash }</Link>
+                <span>
+                  <Link
+                    href={ `https://github.com/helxplatform/${ repo }/commit/${ github_commit_hash }` }
+                    className="hash"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{ github_commit_hash }</Link>
+                  <span className="date">
+                    {' '}&mdash;{' '} { github_commit_date || 'unknown date' }
+                  </span>
+                </span>
               ) : <Typography className="hash">hash unknown</Typography>
           }
         </Stack>
@@ -76,8 +90,10 @@ const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
 
 TagDetails.propTypes = {
   tag_name: PropTypes.string.isRequired,
+  github_tag_date: PropTypes.string,
   repo: PropTypes.string.isRequired,
   github_commit_hash: PropTypes.string,
+  github_commit_date: PropTypes.string,
   artifacts: PropTypes.object.isRequired,
 }
 
@@ -210,7 +226,7 @@ export const ProjectDrawer = ({ open }) => {
             transition: 'filter 250ms',
           },
           '&:hover': {
-            '.accordion-title': {
+            '& .accordion-title': {
               color: theme.palette.text.primary,
             },
             '& .connected-icon': {
@@ -219,6 +235,9 @@ export const ProjectDrawer = ({ open }) => {
             '& .expand-icon': {
               filter: 'opacity(1.0)',
             },
+            '& .date': {
+              filter: 'opacity(1.0)',
+            }
           },
         },
         '& .MuiAccordionSummary-content': {
