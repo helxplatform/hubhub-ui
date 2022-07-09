@@ -34,6 +34,7 @@ const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, githu
           '& .date': {
             color: theme.palette.text.secondary,
             filter: 'opacity(0.5)',
+            transition: 'filter 250ms',
             fontStyle: 'italic',
           },
           '& .hash': {
