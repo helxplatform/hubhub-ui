@@ -26,17 +26,17 @@ export const ProjectsView = () => {
       field: 'latestTag',
       headerName: 'Latest Tag',
       width: 200,
-      valueGetter: params => {
-        const lastDate = Object.keys(projects[params.row.id].tags)
-          .filter(tag => projects[params.row.id].tags[tag].github_tag_date)
-          .map(tag => {
-            const { tag_name, github_tag_date } = projects[params.row.id].tags[tag]
-            return { tag_name, github_tag_date }
-          })
-          // .sort((t, u) => t.github_tag_date < u.github_tag_date ? -1 : 1)
-        console.table(lastDate)
-        return 'WIP'
-      },
+      // valueGetter: params => {
+      //   const lastDate = Object.keys(projects[params.row.id].tags)
+      //     .filter(tag => projects[params.row.id].tags[tag].github_tag_date)
+      //     .map(tag => {
+      //       const { tag_name, github_tag_date } = projects[params.row.id].tags[tag]
+      //       return { tag_name, github_tag_date }
+      //     })
+      //     // .sort((t, u) => t.github_tag_date < u.github_tag_date ? -1 : 1)
+      //   console.table(lastDate)
+      //   return 'WIP'
+      // },
     },
     {
       field: 'tag-count',
