@@ -82,7 +82,7 @@ const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, githu
       
       {
         Object.keys(artifacts).length
-          ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ artifacts[key] }` } location={ key } { ...artifacts[key] } />)
+          ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ key }` } location={ key } { ...artifacts[key] } />)
           : <Typography sx={{ color: 'text.secondary', fontStyle: 'italic' }}>None</Typography>
       }
     </Fragment>
