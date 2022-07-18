@@ -1,102 +1,19 @@
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Link, Stack, Toolbar, Tooltip, Typography, useTheme, 
+  Stack, Toolbar, Tooltip, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
   ExpandMore as ExpandIcon,
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
-  GitHub as GitHubIcon,
   Circle as ConnectedIcon,
 } from '@mui/icons-material'
 import { useApp } from '../../context'
-
-import { Artifact } from './artifact'
-
-//
-
-const TagDetails = ({ repo, tag_name, github_tag_date, github_commit_hash, github_commit_date, artifacts }) => {
-  const theme = useTheme()
-
-  return (
-    <Fragment>
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(1),
-        margin: `${ theme.spacing(2) } 0`,
-        '& .link-stack': {
-          fontSize: '90%',
-          '& .date': {
-            color: theme.palette.text.secondary,
-            filter: 'opacity(0.5)',
-            transition: 'filter 250ms',
-            fontStyle: 'italic',
-          },
-          '& .hash': {
-            color: theme.palette.text.secondary,
-            fontStyle: 'italic',
-          }
-        },
-      }}>
-        <GitHubIcon
-          fontSize="large"
-          sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
-        />
-        <Stack spacing={ 0.5 } className="link-stack">
-          <span>
-            <Link 
-              href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
-              target="_blank"
-              rel="noopener noreferrer"
-            >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
-            <span className="date">
-              {' '}&mdash;{' '} { new Date(github_tag_date).toDateString() || 'date unknown' }
-            </span>
-          </span>
-
-          {
-            github_commit_hash
-              ? (
-                <span>
-                  <Link
-                    href={ `https://github.com/helxplatform/${ repo }/commit/${ github_commit_hash }` }
-                    className="hash"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >{ github_commit_hash }</Link>
-                  <span className="date">
-                    {' '}&mdash;{' '} { new Date(github_commit_date).toDateString() || 'date unknown' }
-                  </span>
-                </span>
-              ) : <Typography className="hash">hash unknown</Typography>
-          }
-        </Stack>
-      </Box>
-
-      <Divider>Artifacts</Divider>
-      
-      {
-        Object.keys(artifacts).length
-          ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ key }` } location={ key } { ...artifacts[key] } />)
-          : <Typography sx={{ color: 'text.secondary', fontStyle: 'italic' }}>None</Typography>
-      }
-    </Fragment>
-  )
-}
-
-TagDetails.propTypes = {
-  tag_name: PropTypes.string.isRequired,
-  github_tag_date: PropTypes.string,
-  repo: PropTypes.string.isRequired,
-  github_commit_hash: PropTypes.string,
-  github_commit_date: PropTypes.string,
-  artifacts: PropTypes.object.isRequired,
-}
+import { Tag } from './tag'
 
 //
 
@@ -288,7 +205,7 @@ export const ProjectDrawer = ({ open }) => {
                     </Tooltip>
                   </AccordionSummary>
                   <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                    <TagDetails repo={ project.repository_name } { ...tag } />
+                    <Tag repo={ project.repository_name } { ...tag } />
                   </AccordionDetails>
                 </Accordion>
               )
