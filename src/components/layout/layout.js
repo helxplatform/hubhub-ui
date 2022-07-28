@@ -48,7 +48,7 @@ export const Layout = ({ children }) => {
             height: '100%',
             padding: '16px',
           },
-          '& .data-toggler': {
+          '& .connected-toggler': {
             display: 'flex',
             alignItems: 'center',
           },
@@ -99,7 +99,7 @@ export const Layout = ({ children }) => {
               placement="bottom"
               title={ settings.onlyConnected ? 'Show all projects' : `Show only projects with connected artifacts` }
             >
-              <Box className="data-toggler">
+              <Box className="connected-toggler">
                 <Box sx={{ textAlign: 'right', marginLeft: theme.spacing(1) }}>
                   <Box className="connected label">Connected</Box>
                   <Box className="all label">All</Box>
