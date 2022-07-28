@@ -13,6 +13,7 @@ import {
   Refresh as RefreshIcon,
   BugReport as DebugIcon,
 } from '@mui/icons-material'
+import { ConnectedSwitch } from '../connected-switch'
 
 const LOGOS = {
   'light': helxLogoDark,
@@ -48,24 +49,6 @@ export const Layout = ({ children }) => {
             height: '100%',
             padding: '16px',
           },
-          '& .data-toggler': {
-            display: 'flex',
-            alignItems: 'center',
-          },
-          '& .label': {
-            fontSize: '85%',
-            '&.connected': {
-              filter: `opacity(${ settings.onlyConnected ? '1.0' : '0.25' })`,
-              color: theme.palette.success.main,
-            },
-            '&.all': {
-              filter: `opacity(${ settings.onlyConnected ? '0.25' : '1.0' })`,
-              color: theme.palette.text.secondary,
-            },
-          },
-          '& .switch': {
-            transform: 'rotate(-90deg)',
-          }
         }}>
           <Link to="/"><img src={ LOGOS[settings.color.mode] } height="100%" alt="" /></Link>
           <Stack
@@ -99,19 +82,7 @@ export const Layout = ({ children }) => {
               placement="bottom"
               title={ settings.onlyConnected ? 'Show all projects' : `Show only projects with connected artifacts` }
             >
-              <Box className="data-toggler">
-                <Box sx={{ textAlign: 'right', marginLeft: theme.spacing(1) }}>
-                  <Box className="connected label">Connected</Box>
-                  <Box className="all label">All</Box>
-                </Box>
-                <Switch
-                  onChange={ event => settings.setOnlyConnected(event.target.checked) }
-                  color="primary"
-                  size="small"
-                  checked={ settings.onlyConnected }
-                  className="switch"
-                />
-              </Box>
+              <ConnectedSwitch />
             </Tooltip>
             
             <Tooltip placement="bottom" title={ `Switch to ${settings.color.mode === settings.color.modes.dark ? 'light' : 'dark' } mode` }>

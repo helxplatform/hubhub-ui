@@ -1,19 +1,86 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Accordion, AccordionSummary, AccordionDetails,
   Box, CardContent, Divider, Drawer, IconButton,
-  Stack, Toolbar, Tooltip, Typography, useTheme, 
+  Link, Stack, Toolbar, Tooltip, Typography, useTheme, 
 } from '@mui/material'
 import {
   Close as CloseIcon,
   ExpandMore as ExpandIcon,
   UnfoldMore as ExpandAllIcon,
   UnfoldLess as CollapseAllIcon,
+  GitHub as GitHubIcon,
   Circle as ConnectedIcon,
 } from '@mui/icons-material'
 import { useApp } from '../../context'
-import { Tag } from './tag'
+import { ConnectedSwitch } from '../connected-switch'
+
+import { Artifact } from './artifact'
+
+//
+
+const TagDetails = ({ tag_name, repo, github_commit_hash, artifacts }) => {
+  const theme = useTheme()
+
+  return (
+    <Fragment>
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1),
+        margin: `${ theme.spacing(2) } 0`,
+        '& a': {
+          textDecoration: 'underline',
+          fontSize: '80%',
+        },
+        '& .hash': {
+          color: theme.palette.text.secondary,
+          fontStyle: 'italic',
+          fontSize: '80%',
+        }
+      }}>
+        <GitHubIcon
+          sx={{ color: github_commit_hash ? theme.palette.primary.main : theme.palette.grey[600] }}
+        />
+        <Stack spacing={ 0.5 }>
+          <Link 
+            href={ `https://github.com/helxplatform/${ repo }/releases/tag/${ tag_name }` }
+            target="_blank"
+            rel="noopener noreferrer"
+          >helxplatform/{ repo }/releases/tag/{ tag_name }</Link>
+
+          {
+            github_commit_hash
+              ? (
+                <Link
+                  href={ `https://github.com/helxplatform/${ repo }/commit/${ github_commit_hash }` }
+                  className="hash"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{ github_commit_hash }</Link>
+              ) : <Typography className="hash">hash unknown</Typography>
+          }
+        </Stack>
+      </Box>
+
+      <Divider>Artifacts</Divider>
+      
+      {
+        Object.keys(artifacts).length
+          ? Object.keys(artifacts).map(key => <Artifact key={ `${ tag_name }-${ artifacts[key] }` } location={ key } { ...artifacts[key] } />)
+          : <Typography sx={{ color: 'text.secondary', fontStyle: 'italic' }}>None</Typography>
+      }
+    </Fragment>
+  )
+}
+
+TagDetails.propTypes = {
+  tag_name: PropTypes.string.isRequired,
+  repo: PropTypes.string.isRequired,
+  github_commit_hash: PropTypes.string,
+  artifacts: PropTypes.object.isRequired,
+}
 
 //
 
@@ -89,6 +156,8 @@ export const ProjectDrawer = ({ open }) => {
             { project?.repository_name || '...' }
           </Typography>
           
+          <ConnectedSwitch />
+
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
@@ -144,7 +213,7 @@ export const ProjectDrawer = ({ open }) => {
             transition: 'filter 250ms',
           },
           '&:hover': {
-            '& .accordion-title': {
+            '.accordion-title': {
               color: theme.palette.text.primary,
             },
             '& .connected-icon': {
@@ -153,9 +222,6 @@ export const ProjectDrawer = ({ open }) => {
             '& .expand-icon': {
               filter: 'opacity(1.0)',
             },
-            '& .date': {
-              filter: 'opacity(1.0)',
-            }
           },
         },
         '& .MuiAccordionSummary-content': {
@@ -175,10 +241,7 @@ export const ProjectDrawer = ({ open }) => {
               padding: theme.spacing(1),
               margin: 0,
             }}>
-              {
-                JSON.stringify(Object.keys(visibleTags)
-                  .reduce((acc, key) => [...acc, project.tags[key]], []), null, 2)
-              }
+              { JSON.stringify(Object.keys(visibleTags).reduce((acc, key) => [...acc, project.tags[key]], []), null, 2) }
             </pre>
           ) : Object.keys(visibleTags).length > 0
             ? Object.keys(visibleTags).map((key, i) => {
@@ -205,7 +268,7 @@ export const ProjectDrawer = ({ open }) => {
                     </Tooltip>
                   </AccordionSummary>
                   <AccordionDetails sx={{ backgroundColor: theme.palette.background.default }}>
-                    <Tag repo={ project.repository_name } { ...tag } />
+                    <TagDetails repo={ project.repository_name } { ...tag } />
                   </AccordionDetails>
                 </Accordion>
               )
