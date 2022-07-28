@@ -14,6 +14,7 @@ import {
   Circle as ConnectedIcon,
 } from '@mui/icons-material'
 import { useApp } from '../../context'
+import { ConnectedSwitch } from '../connected-switch'
 
 import { Artifact } from './artifact'
 
@@ -155,6 +156,8 @@ export const ProjectDrawer = ({ open }) => {
             { project?.repository_name || '...' }
           </Typography>
           
+          <ConnectedSwitch />
+
           <IconButton
             onClick={ handleClickCollapseAll }
             disabled={ expandedPanels.size === 0 }
